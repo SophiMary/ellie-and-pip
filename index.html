@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ellie &amp; Pip</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Lora:ital,wght@0,400;0,500;0,700;1,400&family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Ellie & Pip brand world: cream paper, cocoa ink, dusty rose, sage. Single theme by choice. */
+  --paper:#FDF6EC;
+  --paper-deep:#F6E9DA;
+  --ink:#4E3328;
+  --rose:#C9838A;
+  --blush:#F3D9D5;
+  --sage:#8E9C7F;
+  --display:"Playfair Display", Georgia, "Times New Roman", serif;
+  --body:"Lora", Georgia, serif;
+  --hand:"Caveat", "Comic Sans MS", cursive;
+  /* layout: one narrow column of storybook "pages", each a framed card on cream */
+  color-scheme: light;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.65}
+img{max-width:100%;display:block}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:3px solid var(--rose);outline-offset:3px;border-radius:6px}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.1;text-wrap:balance}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+
+/* header */
+header{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--blush)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--display);font-size:24px;font-weight:700}
+.brand .amp{font-style:italic;font-weight:400;color:var(--rose)}
+nav{display:flex;gap:22px;font-size:15px;letter-spacing:.06em}
+nav a{text-decoration:none}
+nav a:hover{color:var(--rose)}
+@media (max-width:560px){nav .hide-sm{display:none}}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;padding-top:56px;padding-bottom:40px}
+.eyebrow{font-size:13px;letter-spacing:.32em;text-transform:uppercase;color:var(--rose)}
+.hero h1{font-size:clamp(46px,7vw,78px);margin:14px 0 6px}
+.hero h1 em{font-weight:400;color:var(--rose)}
+.code{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:15px;color:var(--sage)}
+.hero p.lede{font-size:20px;max-width:30ch;margin-top:18px}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:999px;font-weight:700;font-size:16px;text-decoration:none;border:2px solid var(--ink);transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:var(--ink);color:var(--paper)}
+.btn-ghost{background:transparent;color:var(--ink)}
+.hero-art img{width:100%;max-width:470px;margin:0 auto}
+@media (max-width:760px){.hero{grid-template-columns:1fr;text-align:left;padding-top:32px}.hero-art{order:-1}.hero-art img{max-width:340px}}
+
+/* section shell */
+section{padding:56px 0}
+.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:28px}
+.section-head h2{font-size:clamp(34px,5vw,48px)}
+.hand{font-family:var(--hand);color:var(--rose);font-size:30px;line-height:1.1}
+
+/* drop card */
+.drop{display:grid;grid-template-columns:1fr 1fr;background:#fff8f0;border:1.5px solid var(--blush);border-radius:28px;overflow:hidden}
+.drop-art{background:#2E201A;display:grid;place-items:center;padding:40px;position:relative}
+.drop-art img{width:min(360px,100%);border-radius:50%;border:12px solid var(--paper)}
+.tag{position:absolute;top:22px;left:22px;background:var(--rose);color:#fff;font-size:13px;letter-spacing:.18em;text-transform:uppercase;padding:7px 14px;border-radius:999px}
+.drop-info{padding:40px;display:flex;flex-direction:column;gap:18px}
+.drop-info h3{font-size:44px}
+.drop-info h3 em{font-weight:400;color:var(--rose)}
+.price{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.price strong{font-family:var(--display);font-size:24px}
+.specs{display:grid;gap:12px;border-top:1px dashed var(--rose);padding-top:18px}
+.spec{display:grid;grid-template-columns:72px 1fr;gap:12px;font-size:16px}
+.spec b{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--rose);padding-top:3px}
+.note{font-size:14px;opacity:.8}
+@media (max-width:760px){.drop{grid-template-columns:1fr}.drop-info{padding:28px}}
+
+.more{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px}
+.soon{border:1.5px dashed var(--rose);border-radius:20px;padding:24px;background:transparent}
+.soon h3{font-size:22px;margin:10px 0 4px}.soon p{font-size:16px}
+.soon-tag{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--sage);font-weight:700}
+@media (max-width:760px){.more{grid-template-columns:1fr}}
+.gallery{background:#F2F2F2;flex-direction:column;gap:16px;display:flex;align-items:center;justify-content:center}
+.gallery img{border:0;border-radius:0;width:min(420px,100%);height:auto}
+.side{display:flex;gap:8px;background:#fff;border-radius:999px;padding:5px}
+.side button{border:0;background:transparent;font:600 15px var(--body);color:var(--ink);padding:8px 18px;border-radius:999px;cursor:pointer}
+.side button.on{background:var(--ink);color:var(--paper)}
+.opt{display:grid;gap:8px}
+.opt-label{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--rose)}
+.opt-label b{color:var(--ink);letter-spacing:.04em;text-transform:none;font-size:16px}
+.swatches{display:flex;gap:12px}
+.sw{width:38px;height:38px;border-radius:50%;background:var(--sw);border:2px solid #fff;box-shadow:0 0 0 1.5px var(--blush);cursor:pointer}
+.sw.on{box-shadow:0 0 0 2.5px var(--ink)}
+.sizes{display:flex;flex-wrap:wrap;gap:8px}
+.sizes span{border:1.5px solid var(--blush);border-radius:10px;padding:6px 12px;font-size:15px;font-variant-numeric:tabular-nums}
+.chart summary{cursor:pointer;font-size:15px;font-weight:700;text-decoration:underline;text-underline-offset:3px;width:max-content}
+.chart table{border-collapse:collapse;margin:10px 0 8px;font-size:15px;font-variant-numeric:tabular-nums}
+.chart th,.chart td{border:1px solid var(--blush);padding:6px 16px;text-align:center}
+.chart th{background:var(--blush);font-weight:700}
+.chart-btn{background:none;border:0;padding:0;font:700 15px var(--body);color:var(--ink);text-decoration:underline;text-underline-offset:3px;cursor:pointer;width:max-content}
+.modal{position:fixed;inset:0;z-index:20;background:rgba(46,32,26,.55);display:grid;place-items:center;padding:20px}
+.modal[hidden]{display:none}
+.modal-card{position:relative;background:var(--paper);border-radius:24px;padding:34px 32px 28px;max-width:420px;width:100%;box-shadow:0 30px 60px rgba(0,0,0,.3)}
+.modal-card h3{font-size:30px}
+.modal-x{position:absolute;top:14px;right:16px;width:38px;height:38px;border-radius:50%;border:0;background:var(--blush);color:var(--ink);font-size:24px;line-height:1;cursor:pointer}
+.modal-card table{width:100%;border-collapse:collapse;margin:16px 0 12px;font-variant-numeric:tabular-nums}
+.modal-card th,.modal-card td{border:1px solid var(--blush);padding:9px 10px;text-align:center}
+.modal-card th{background:var(--blush)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:22px}
+.pcard{display:flex;flex-direction:column;text-align:left;background:#fff8f0;border:1.5px solid var(--blush);border-radius:22px;overflow:hidden;padding:0;cursor:pointer;font:inherit;color:inherit;transition:transform .15s, box-shadow .15s}
+.pcard:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(78,51,40,.12)}
+.pcard:focus-visible{outline:3px solid var(--rose);outline-offset:3px}
+.pimg{background:#F2F2F2;aspect-ratio:4/5;display:grid;place-items:center}
+.pimg img{width:88%;height:auto}
+.pbody{padding:18px 20px 20px;display:grid;gap:6px}
+.ptype{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--rose)}
+.pbody h3{font-size:24px}.pbody h3 em{font-weight:400;color:var(--rose)}
+.prow{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.prow strong{font-family:var(--display);font-size:22px}
+.dots{display:flex;gap:4px}.dots i{width:14px;height:14px;border-radius:50%;border:1px solid var(--blush)}
+.pcount{font-size:14px;opacity:.75}
+.product-card{max-width:940px;padding:0;overflow:hidden;max-height:calc(100% - 20px);overflow-y:auto}
+.pm{display:grid;grid-template-columns:1fr 1fr}
+.pm .gallery{position:relative;padding:56px 24px 28px;min-height:100%}
+.pm .gallery img{width:min(380px,100%);height:auto}
+.pm-info{padding:40px 34px 30px;display:flex;flex-direction:column;gap:16px}
+.pm-info h3{font-size:38px;padding-right:40px}.pm-info h3 em{font-weight:400;color:var(--rose)}
+.product-card .modal-x{z-index:2}
+#chartModal{z-index:30}
+#chartModal table{width:100%;border-collapse:collapse;margin:16px 0 12px;font-variant-numeric:tabular-nums}
+#chartModal th,#chartModal td{border:1px solid var(--blush);padding:9px 10px;text-align:center}
+#chartModal th{background:var(--blush)}
+@media (max-width:760px){.pm{grid-template-columns:1fr}.pm-info{padding:26px 22px}.pm .gallery{padding-top:60px}}
+.sz{border:1.5px solid var(--blush);background:#fff;border-radius:10px;padding:7px 13px;font:600 15px var(--body);color:var(--ink);cursor:pointer;font-variant-numeric:tabular-nums}
+.sz:hover{border-color:var(--rose)}
+.sz.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+/* story */
+.story{display:grid;grid-template-columns:.9fr 1.1fr;gap:44px;align-items:start}
+.story-card{background:var(--blush);border-radius:24px;padding:36px;transform:rotate(-1.5deg)}
+.story-card .big{font-family:var(--display);font-style:italic;font-size:34px;line-height:1.2}
+.story-text p+p{margin-top:16px}
+.story-text p{max-width:60ch}
+.sign{font-family:var(--hand);font-size:38px;color:var(--rose);margin-top:10px}
+@media (max-width:760px){.story{grid-template-columns:1fr}.story-card{transform:none}}
+
+/* how to order */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;counter-reset:s}
+.step{background:#fff8f0;border:1.5px solid var(--blush);border-radius:20px;padding:26px}
+.step::before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--sage);color:#fff;font-family:var(--display);font-weight:700;margin-bottom:14px}
+.step h3{font-size:22px;margin-bottom:6px}
+.step p{font-size:16px}
+@media (max-width:760px){.steps{grid-template-columns:1fr}}
+
+/* footer */
+footer{border-top:1px solid var(--blush);padding:40px 0 56px;margin-top:20px}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+.foot img{width:120px}
+.foot small{display:block;font-size:14px;opacity:.8}
+.foot .tagline{font-size:13px;letter-spacing:.28em;text-transform:uppercase}
+
+section{scroll-margin-top:64px}
+/* ===== phone ===== */
+@media (max-width:600px){
+  body{font-size:17px}
+  .bar{padding:10px 0}
+  .brand{font-size:21px}
+  nav{gap:14px;font-size:14px}
+  .hero{gap:18px;padding-top:20px;padding-bottom:24px}
+  .hero-art{order:-1}
+  .hero-art img{max-width:230px}
+  .hero h1{font-size:44px}
+  .hero p.lede{font-size:18px}
+  .cta{margin-top:20px}
+  .btn{padding:13px 18px;font-size:15px}
+  .hero .cta .btn{flex:1 1 auto;justify-content:center}
+  section{padding:36px 0}
+  .section-head{margin-bottom:18px}
+  .hand{font-size:26px}
+  .grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .grid:has(.pcard:only-child){grid-template-columns:1fr}
+  .pbody{padding:14px 14px 16px}
+  .pbody h3{font-size:20px}
+  .more{display:flex;overflow-x:auto;gap:12px;scroll-snap-type:x mandatory;padding-bottom:6px;margin-right:-20px;padding-right:20px}
+  .soon{flex:0 0 72%;scroll-snap-align:start;padding:18px}
+  .story{gap:24px}
+  .story-card{padding:24px}
+  .story-card .big{font-size:26px}
+  .steps{gap:12px}
+  .step{padding:20px}
+  /* product sheet: full screen */
+  .modal{padding:0;place-items:end stretch}
+  .product-card{max-width:none;width:100%;height:100%;max-height:none;border-radius:0}
+  .pm .gallery{padding:58px 16px 16px;min-height:0}
+  .pm .gallery img{width:auto;max-width:78%;max-height:44vh}
+  .pm-info{padding:20px 18px 0;gap:14px}
+  .pm-info h3{font-size:30px}
+  .product-card .modal-x{position:fixed;top:12px;right:12px;background:var(--paper);box-shadow:0 2px 8px rgba(0,0,0,.15)}
+  .pm-cta{position:sticky;bottom:0;margin:6px -18px 0;padding:12px 18px calc(12px + env(safe-area-inset-bottom));background:var(--paper);border-top:1px solid var(--blush);display:grid;grid-template-columns:1fr 1fr;gap:10px;z-index:3}
+  .pm-cta .btn{justify-content:center;padding:13px 10px;font-size:15px}
+  .pm-info .note{padding-bottom:14px}
+  .swatches{flex-wrap:wrap;gap:10px}
+  #chartModal{padding:16px;place-items:center}
+  #chartModal .modal-card{padding:28px 20px 22px}
+  .foot{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="#top">Ellie <span class="amp">&amp;</span> Pip</a>
+    <nav aria-label="Main">
+      <a href="#shop">Shop</a>
+      <a href="#story" class="hide-sm">Our story</a>
+      <a href="#order">How to order</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap hero">
+    <div>
+      <p class="code">&gt; print("Hello World")</p>
+      <h1>Little things,<br><em>big love.</em></h1>
+      <p class="eyebrow">Made with love in Bengaluru</p>
+      <p class="lede">Soft tees and little treasures I couldn't find anywhere, so I made them myself.</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="#shop">Shop now</a>
+        <a class="btn btn-ghost" href="https://instagram.com/ellie_n_pip">Follow @ellie_n_pip</a>
+      </div>
+    </div>
+    <div class="hero-art"><img src="img/logo.webp" alt="Ellie &amp; Pip logo: a smiling elephant with a little bird perched on her trunk"></div>
+  </div>
+
+  <section id="shop">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Shop</h2>
+        <span class="hand">little things, made to love</span>
+      </div>
+      <div class="grid" id="productGrid" aria-live="polite"></div>
+      <div class="more">
+        <div class="soon"><span class="soon-tag">Coming soon</span><h3>Cozy hoodies</h3><p>Same soft feel, made for Bengaluru evenings.</p></div>
+        <div class="soon"><span class="soon-tag">Coming soon</span><h3>Home decor</h3><p>Little things for your shelves and walls.</p></div>
+        <div class="soon"><span class="soon-tag">Coming soon</span><h3>3D-printed treasures</h3><p>Tiny keepsakes, designed and printed with love.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="story">
+    <div class="wrap story">
+      <div class="story-card">
+        <p class="big">A big-hearted elephant and her tiny, brave bird friend.</p>
+        <img src="img/ellie-pip.webp" alt="Ellie the elephant and Pip the bird" style="margin-top:18px">
+      </div>
+      <div class="story-text">
+        <div class="section-head" style="margin-bottom:18px"><h2>Hello, World</h2></div>
+        <p>By day, I'm a software engineer, so it only felt right to start this the way every new project begins.</p>
+        <p>In between, I kept searching for things I'd love to wear or keep, and came up empty every time. Nothing felt like me. So I thought: why not make them myself?</p>
+        <p>That's how Ellie &amp; Pip was born. Ellie and Pip are a reminder that this started small, a little scary, but full of love. Every design here is something I wished existed. For me, and now for you.</p>
+        <p class="sign">— Sofy</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="order">
+    <div class="wrap">
+      <div class="section-head"><h2>How to order</h2><span class="hand">three easy steps</span></div>
+      <div class="steps">
+        <div class="step"><h3>Pick your size</h3><p>It's an oversized fit. If you like it less roomy, go one size down.</p></div>
+        <div class="step"><h3>Message us</h3><p>Tap Order on WhatsApp or DM @ellie_n_pip with your size and pincode.</p></div>
+        <div class="step"><h3>We print &amp; ship</h3><p>Each tee is printed fresh for you and sent to your door, with a little thank-you inside.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div style="display:flex;align-items:center;gap:16px">
+      <img src="img/logo.webp" alt="">
+      <div>
+        <p class="tagline">Little Things, Big Love</p>
+        <small>Made with love in Bengaluru, India</small>
+      </div>
+    </div>
+    <div>
+      <a href="https://instagram.com/ellie_n_pip">@ellie_n_pip</a>
+      <small>WhatsApp +91 88921 81354</small>
+    </div>
+  </div>
+</footer>
+<div class="modal" id="productModal" role="dialog" aria-modal="true" aria-labelledby="pName" hidden>
+  <div class="modal-card product-card">
+    <button type="button" class="modal-x" id="productClose" aria-label="Close">&times;</button>
+    <div class="pm">
+      <div class="gallery">
+        <span class="tag" id="pType"></span>
+        <img id="pImg" src="" alt="" width="640" height="820">
+        <div class="side" role="group" aria-label="View">
+          <button type="button" id="sideBack" class="on" aria-pressed="true">Back</button>
+          <button type="button" id="sideFront" aria-pressed="false">Front</button>
+        </div>
+      </div>
+      <div class="pm-info">
+        <h3 id="pName"></h3>
+        <p id="pDesc"></p>
+        <div class="opt">
+          <span class="opt-label">Colour: <b id="pColour"></b></span>
+          <div class="swatches" id="pSwatches" role="group" aria-label="Colour"></div>
+        </div>
+        <div class="opt">
+          <span class="opt-label">Size: <b id="pSizeName">pick one</b></span>
+          <div class="sizes" id="pSizes" role="group" aria-label="Size"></div>
+          <button type="button" class="chart-btn" id="chartOpen" aria-haspopup="dialog">Size chart</button>
+        </div>
+        <div class="price"><strong id="pPrice"></strong><span class="hand" id="pFit" style="font-size:26px"></span></div>
+        <div class="specs" id="pSpecs"></div>
+        <p class="note">WhatsApp: +91 88921 81354</p>
+        <div class="cta pm-cta" style="margin-top:4px">
+          <a class="btn btn-primary" id="pWa" href="#">Order on WhatsApp</a>
+          <a class="btn btn-ghost" href="https://ig.me/m/ellie_n_pip">DM on Instagram</a>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="chartModal" role="dialog" aria-modal="true" aria-labelledby="chartTitle" hidden>
+  <div class="modal-card">
+    <button type="button" class="modal-x" id="chartClose" aria-label="Close size chart">&times;</button>
+    <h3 id="chartTitle">Size chart</h3>
+    <p class="note" id="chartSub"></p>
+    <table><thead><tr><th scope="col">Size</th><th scope="col">Chest</th><th scope="col">Length</th></tr></thead><tbody id="chartBody"></tbody></table>
+    <p class="note">Measured on the tee, not your body. For a less roomy look, pick one size down.</p>
+  </div>
+</div>
+
+<script>
+/* ===== PRODUCTS: add a new product by adding one entry here ===== */
+var SIZE_CHARTS = {
+  oversized: { label: "Oversized standard tee · inches",
+    rows: [["XS",40,27],["S",42,28],["M",44,29],["L",46,30],["XL",48,31],["XXL",50,32]] }
+};
+var PRODUCTS = [
+  {
+    id: "filter-coffee",
+    name: "Filter Coffee Tee",
+    nameHtml: "Filter <em>Coffee</em> Tee",
+    type: "T-shirt",
+    price: 699,
+    fit: "unisex · oversized",
+    desc: "For everyone whose day starts only when the decoction hits the tumbler. A little kaapi icon on the front, and \"Fueled by Filter Coffee\" across the back.",
+    specs: [["Fabric","100% cotton, 180 GSM. Structured drape without the bulk."],["Fit","Unisex oversized, with extra length and a dropped sleeve."],["Care","Wash inside out in cold water, tumble dry low, iron inside out."]],
+    sizes: ["XS","S","M","L","XL","XXL"],
+    chart: "oversized",
+    startColour: "1",
+    colours: [
+      {c:"1", name:"White", hex:"#FFFFFF"},
+      {c:"4", name:"Grey", hex:"#BCC0C3"},
+      {c:"45", name:"Pink", hex:"#EECCDD"},
+      {c:"49", name:"Lavender", hex:"#D4D4EE"},
+      {c:"51", name:"Butter yellow", hex:"#EFDFAC"},
+      {c:"2", name:"Black", hex:"#2B2B2B"},
+      {c:"3", name:"Navy", hex:"#2E3A4B"}
+    ],
+    image: function(c, side){ return "img/tee-" + c + "-" + side + ".webp"; }
+  }
+];
+/* ================================================================ */
+
+(function(){
+  var grid=document.getElementById('productGrid');
+  var pm=document.getElementById('productModal'), cm=document.getElementById('chartModal');
+  var cur=null, colour=null, size=null, side='back', lastFocus=null;
+  function $(id){return document.getElementById(id);}
+  function rupee(n){return "\u20B9"+n;}
+
+  PRODUCTS.forEach(function(p){
+    var start=p.colours.filter(function(x){return x.c===p.startColour;})[0]||p.colours[0];
+    var card=document.createElement('button');
+    card.type='button'; card.className='pcard'; card.setAttribute('aria-label','View '+p.name);
+    card.innerHTML='<div class="pimg"><img src="'+p.image(start.c,'back')+'" alt="" loading="lazy"></div>'+
+      '<div class="pbody"><span class="ptype">'+p.type+'</span><h3>'+p.nameHtml+'</h3>'+
+      '<div class="prow"><strong>'+rupee(p.price)+'</strong><span class="dots">'+
+      p.colours.map(function(x){return '<i style="background:'+x.hex+'"></i>';}).join('')+
+      '</span></div><span class="pcount">'+p.colours.length+' colours · '+p.sizes[0]+'–'+p.sizes[p.sizes.length-1]+'</span></div>';
+    card.addEventListener('click',function(){openProduct(p);});
+    grid.appendChild(card);
+  });
+
+  function render(){
+    $('pImg').src=cur.image(colour.c,side);
+    $('pImg').alt=cur.name+', '+colour.name+', '+side;
+    $('pColour').textContent=colour.name;
+    $('pSizeName').textContent=size||'pick one';
+    $('pWa').href='https://wa.me/918892181354?text='+encodeURIComponent("Hi Ellie & Pip! I'd like to order the "+cur.name+" in "+colour.name+", size "+(size||"___")+". My location: ");
+    Array.prototype.forEach.call($('pSizes').children,function(b){var on=b.dataset.s===size;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);});
+    Array.prototype.forEach.call($('pSwatches').children,function(b){var on=b.dataset.c===colour.c;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);});
+    [['sideBack','back'],['sideFront','front']].forEach(function(x){var on=side===x[1];$(x[0]).classList.toggle('on',on);$(x[0]).setAttribute('aria-pressed',on);});
+  }
+  function openProduct(p,fromHash){
+    cur=p; side='back';
+    colour=p.colours.filter(function(x){return x.c===p.startColour;})[0]||p.colours[0];
+    $('pType').textContent=p.type; $('pName').innerHTML=p.nameHtml; $('pDesc').textContent=p.desc;
+    $('pPrice').textContent=rupee(p.price); $('pFit').textContent=p.fit;
+    size=null; var sz=$('pSizes'); sz.innerHTML='';
+    p.sizes.forEach(function(z){var b=document.createElement('button');b.type='button';b.className='sz';b.dataset.s=z;b.textContent=z;b.setAttribute('aria-pressed','false');b.addEventListener('click',function(){size=z;render();});sz.appendChild(b);});
+    $('pSpecs').innerHTML=p.specs.map(function(r){return '<div class="spec"><b>'+r[0]+'</b><span>'+r[1]+'</span></div>';}).join('');
+    $('chartOpen').hidden=!p.chart;
+    var sw=$('pSwatches'); sw.innerHTML='';
+    p.colours.forEach(function(x){
+      var b=document.createElement('button'); b.type='button'; b.className='sw'; b.dataset.c=x.c;
+      b.style.setProperty('--sw',x.hex); b.setAttribute('aria-label',x.name);
+      b.addEventListener('click',function(){colour=x;render();});
+      sw.appendChild(b);
+      ['front','back'].forEach(function(sd){var i=new Image();i.src=p.image(x.c,sd);});
+    });
+    render();
+    lastFocus=document.activeElement; pm.hidden=false; document.body.style.overflow='hidden'; $('productClose').focus();
+    if(!fromHash && location.hash!=='#'+p.id){ try{history.replaceState(null,'','#'+p.id);}catch(e){} }
+  }
+  function closeProduct(){
+    pm.hidden=true; document.body.style.overflow='';
+    if(location.hash){ try{history.replaceState(null,'','#shop');}catch(e){} }
+    if(lastFocus) lastFocus.focus();
+  }
+  $('sideBack').addEventListener('click',function(){side='back';render();});
+  $('sideFront').addEventListener('click',function(){side='front';render();});
+  $('productClose').addEventListener('click',closeProduct);
+  pm.addEventListener('click',function(e){if(e.target===pm)closeProduct();});
+
+  function openChart(){
+    var ch=SIZE_CHARTS[cur.chart]; $('chartSub').textContent=ch.label;
+    $('chartBody').innerHTML=ch.rows.map(function(r){return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td></tr>';}).join('');
+    cm.hidden=false; $('chartClose').focus();
+  }
+  function closeChart(){cm.hidden=true;$('chartOpen').focus();}
+  $('chartOpen').addEventListener('click',openChart);
+  $('chartClose').addEventListener('click',closeChart);
+  cm.addEventListener('click',function(e){if(e.target===cm)closeChart();});
+  document.addEventListener('keydown',function(e){
+    if(e.key!=='Escape')return;
+    if(!cm.hidden)closeChart(); else if(!pm.hidden)closeProduct();
+  });
+
+  function fromHash(){
+    var id=location.hash.replace('#','');
+    var p=PRODUCTS.filter(function(x){return x.id===id;})[0];
+    if(p && pm.hidden) openProduct(p,true);
+  }
+  window.addEventListener('hashchange',fromHash); fromHash();
+})();
+</script>
+</body>
+</html>
