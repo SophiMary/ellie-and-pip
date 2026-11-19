@@ -155,6 +155,11 @@ section{padding:56px 0}
 @media (max-width:760px){.pm{grid-template-columns:1fr}.pm-info{padding:26px 22px}.pm .gallery{padding-top:60px}}
 .sz{border:1.5px solid var(--blush);background:#fff;border-radius:10px;padding:7px 13px;font:600 15px var(--body);color:var(--ink);cursor:pointer;font-variant-numeric:tabular-nums}
 .sz:hover{border-color:var(--rose)}
+.photos{display:grid;gap:8px}
+.photos-row{display:flex;gap:10px;flex-wrap:wrap}
+.photos-row button{border:1.5px solid var(--blush);background:#fff;border-radius:12px;padding:0;overflow:hidden;cursor:pointer;width:76px;aspect-ratio:4/5}
+.photos-row button.on{border-color:var(--ink);box-shadow:0 0 0 1.5px var(--ink)}
+.photos-row img{width:100%;height:100%;object-fit:cover}
 .sz.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 /* story */
 .story{display:grid;grid-template-columns:.9fr 1.1fr;gap:44px;align-items:start}
@@ -346,6 +351,7 @@ section{scroll-margin-top:64px}
         </div>
         <div class="price"><strong id="pPrice"></strong><span class="hand" id="pFit" style="font-size:26px"></span></div>
         <div class="specs" id="pSpecs"></div>
+        <div class="photos" id="pPhotos" hidden><span class="opt-label">Real photos</span><div class="photos-row" id="pPhotoRow" role="group" aria-label="Real photos"></div></div>
         <img id="pFitImg" alt="Girls fit compared with boys fit" hidden style="width:100%;border-radius:16px;border:1.5px solid var(--blush)">
         <p class="note" id="pNeed" role="alert" hidden style="color:#B4463A;font-weight:700;opacity:1"></p>
         <div class="cta pm-cta" style="margin-top:4px">
@@ -392,6 +398,7 @@ var PRODUCTS = [
     chart: "oversized",
     startColour: "1",
     cover: "img/cover-coffee.webp",
+    photos: [["img/cover-coffee.webp","Back print, worn"],["img/coffee-photo-front.webp","Pocket print with davara-tumbler"],["img/coffee-photo-back-closeup.webp","Back print close-up"]],
     colours: [
       {c:"1", name:"White", hex:"#FFFFFF"},
       {c:"4", name:"Grey", hex:"#BCC0C3"},
@@ -532,6 +539,7 @@ var PRODUCTS = [
   });
 
   function render(){
+    Array.prototype.forEach.call($('pPhotoRow').children,function(b){b.classList.remove('on');});
     $('pImg').src=cur.image(colour.c,side);
     $('pImg').alt=cur.name+', '+colour.name+', '+side;
     $('pColour').textContent=colourPicked?colour.name:'pick one';
@@ -559,6 +567,17 @@ var PRODUCTS = [
     p.sizes.forEach(function(z){var b=document.createElement('button');b.type='button';b.className='sz';b.dataset.s=z;b.textContent=z;b.setAttribute('aria-pressed','false');b.addEventListener('click',function(){size=z;render();});sz.appendChild(b);});
     $('pSpecs').innerHTML=p.specs.map(function(r){return '<div class="spec"><b>'+r[0]+'</b><span>'+r[1]+'</span></div>';}).join('');
     $('chartOpen').hidden=!p.chart;
+    var pr=$('pPhotoRow'); pr.innerHTML=''; $('pPhotos').hidden=!p.photos;
+    (p.photos||[]).forEach(function(ph){
+      var b=document.createElement('button'); b.type='button'; b.setAttribute('aria-label',ph[1]);
+      b.innerHTML='<img src="'+ph[0]+'" alt="" loading="lazy">';
+      b.addEventListener('click',function(){
+        $('pImg').src=ph[0]; $('pImg').alt=cur.name+', '+ph[1];
+        Array.prototype.forEach.call(pr.children,function(x){x.classList.toggle('on',x===b);});
+        var g=document.querySelector('.pm .gallery'); if(g&&g.getBoundingClientRect().top<0) g.scrollIntoView({behavior:'smooth',block:'start'});
+      });
+      pr.appendChild(b);
+    });
     if(p.fitImg){$('pFitImg').src=p.fitImg;$('pFitImg').hidden=false;}else{$('pFitImg').hidden=true;}
     var sw=$('pSwatches'); sw.innerHTML='';
     p.colours.forEach(function(x){
