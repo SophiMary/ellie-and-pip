@@ -396,7 +396,7 @@ var PRODUCTS = [
     specs: [["Fabric","100% cotton, 180 GSM. Structured drape without the bulk."],["Fit","Unisex oversized, with extra length and a dropped sleeve."],["Care","Wash inside out in cold water, tumble dry low, iron inside out."]],
     sizes: ["XS","S","M","L","XL","XXL"],
     chart: "oversized",
-    startColour: "1",
+    startColour: "2",
     cover: "img/cover-coffee.webp",
     photos: [["img/cover-coffee.webp","Back print, worn"],["img/coffee-photo-front.webp","Pocket print with davara-tumbler"],["img/coffee-photo-back-closeup.webp","Back print close-up"]],
     colours: [
@@ -408,7 +408,10 @@ var PRODUCTS = [
       {c:"2", name:"Black", hex:"#2B2B2B"},
       {c:"3", name:"Navy", hex:"#2E3A4B"}
     ],
-    image: function(c, side){ return "img/tee-" + c + "-" + side + ".webp"; }
+    image: function(c, side){
+      if (c === "2") return side === "back" ? "img/cover-coffee.webp" : "img/coffee-photo-front.webp"; // black: real photos
+      return "img/tee-" + c + "-" + side + ".webp";
+    }
   },
   {
     id: "tasty-food",
