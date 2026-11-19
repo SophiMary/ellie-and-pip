@@ -398,7 +398,7 @@ var PRODUCTS = [
     chart: "oversized",
     startColour: "2",
     cover: "img/cover-coffee.webp",
-    photos: [["img/cover-coffee.webp","Back print, worn"],["img/coffee-photo-front.webp","Pocket print with davara-tumbler"],["img/coffee-photo-back-closeup.webp","Back print close-up"]],
+    photos: [["img/coffee-photo-back.webp","Back print, worn"],["img/cover-coffee.webp","Back print at sunset"],["img/coffee-photo-front.webp","Pocket print with davara-tumbler"],["img/coffee-photo-back-closeup.webp","Back print close-up"]],
     colours: [
       {c:"1", name:"White", hex:"#FFFFFF"},
       {c:"4", name:"Grey", hex:"#BCC0C3"},
@@ -409,7 +409,7 @@ var PRODUCTS = [
       {c:"3", name:"Navy", hex:"#2E3A4B"}
     ],
     image: function(c, side){
-      if (c === "2") return side === "back" ? "img/cover-coffee.webp" : "img/coffee-photo-front.webp"; // black: real photos
+      if (c === "2") return side === "back" ? "img/coffee-photo-back.webp" : "img/coffee-photo-front.webp"; // black: real photos
       return "img/tee-" + c + "-" + side + ".webp";
     }
   },
