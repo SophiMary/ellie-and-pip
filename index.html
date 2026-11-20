@@ -107,6 +107,10 @@ section{padding:56px 0}
 .side{display:flex;gap:8px;background:#fff;border-radius:999px;padding:5px}
 .side button{border:0;background:transparent;font:600 15px var(--body);color:var(--ink);padding:8px 18px;border-radius:999px;cursor:pointer}
 .side button.on{background:var(--ink);color:var(--paper)}
+.vnav{align-items:center}
+.vnav button{font-size:22px;line-height:1;padding:6px 16px}
+.vnav button:hover{background:var(--blush)}
+.vnav span{font:600 15px var(--body);color:var(--ink);min-width:120px;text-align:center}
 .opt{display:grid;gap:8px}
 .opt-label{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--rose)}
 .opt-label b{color:var(--ink);letter-spacing:.04em;text-transform:none;font-size:16px}
@@ -340,6 +344,11 @@ section{scroll-margin-top:64px}
           <button type="button" id="sideBack" class="on" aria-pressed="true">Back</button>
           <button type="button" id="sideFront" aria-pressed="false">Front</button>
         </div>
+        <div class="side vnav" id="vNav" role="group" aria-label="Views" hidden>
+          <button type="button" id="vPrev" aria-label="Previous view">&#8249;</button>
+          <span id="vLabel" aria-live="polite"></span>
+          <button type="button" id="vNext" aria-label="Next view">&#8250;</button>
+        </div>
       </div>
       <div class="pm-info">
         <h3 id="pName"></h3>
@@ -527,16 +536,14 @@ var PRODUCTS = [
     specs: [["Fit","Women's crop top: a fitted, cropped cut that sits just above the waist."],["Print","Front print in durable DTF, made fresh for your order."],["Care","Wash inside out in cold water. Do not iron directly on the print. Do not tumble dry."]],
     sizes: ["XS","S","M","L","XL","XXL"],
     chart: "cropTop",
-    sides: ["front"],
+    views: [["closeup","Front print"],["model","Full look"],["back","Back"]],
     startColour: "2",
     cover: "img/cover-yoga.webp",
-    photosLabel: "More views (mockups)",
-    photos: [["img/yoga-2-closeup.webp","Black, print close-up"],["img/yoga-2-model.webp","Black, full look"],["img/yoga-3-closeup.webp","Navy, print close-up"],["img/yoga-3-model.webp","Navy, full look"]],
     colours: [
       {c:"2", name:"Black", hex:"#2B2B2B"},
       {c:"3", name:"Navy", hex:"#2E3A4B"}
     ],
-    image: function(c, side){ return "img/yoga-" + c + "-closeup.webp"; }
+    image: function(c, view){ return "img/yoga-" + c + "-" + view + ".webp"; }
   },
   {
     id: "ellie-pip-girls",
@@ -636,10 +643,14 @@ var PRODUCTS = [
     Array.prototype.forEach.call($('pSizes').children,function(b){var on=b.dataset.s===size;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);});
     Array.prototype.forEach.call($('pSwatches').children,function(b){var on=colourPicked&&b.dataset.c===colour.c;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);});
     [['sideBack','back'],['sideFront','front']].forEach(function(x){var on=side===x[1];$(x[0]).classList.toggle('on',on);$(x[0]).setAttribute('aria-pressed',on);});
+    if(cur.views){var vi=viewIndex(); $('vLabel').textContent=cur.views[vi][1]+'  ·  '+(vi+1)+'/'+cur.views.length; $('pImg').alt=cur.name+', '+colour.name+', '+cur.views[vi][1];}
   }
+  function viewIndex(){for(var i=0;i<cur.views.length;i++){if(cur.views[i][0]===side)return i;}return 0;}
+  function stepView(d){var n=cur.views.length;side=cur.views[(viewIndex()+d+n)%n][0];render();}
   function openProduct(p,fromHash){
-    cur=p; side=(p.sides||['back','front'])[0];
-    document.querySelector('.side').style.display=(p.sides||['back','front']).length<2?'none':'';
+    cur=p; side=p.views?p.views[0][0]:(p.sides||['back','front'])[0];
+    document.querySelector('.side').style.display=(p.views||(p.sides||['back','front']).length<2)?'none':'';
+    $('vNav').hidden=!p.views;
     colour=p.colours.filter(function(x){return x.c===p.startColour;})[0]||p.colours[0];
     $('pType').textContent=p.type; $('pName').innerHTML=p.nameHtml; $('pDesc').textContent=p.desc;
     $('pPrice').textContent=rupee(p.price); $('pFit').textContent=p.fit;
@@ -665,7 +676,7 @@ var PRODUCTS = [
       b.style.setProperty('--sw',x.hex); b.setAttribute('aria-label',x.name);
       b.addEventListener('click',function(){colour=x;colourPicked=true;render();});
       sw.appendChild(b);
-      (p.sides||['front','back']).forEach(function(sd){var i=new Image();i.src=p.image(x.c,sd);});
+      (p.views?p.views.map(function(v){return v[0];}):(p.sides||['front','back'])).forEach(function(sd){var i=new Image();i.src=p.image(x.c,sd);});
     });
     render();
     lastFocus=document.activeElement; pm.hidden=false; document.body.style.overflow='hidden'; $('productClose').focus();
@@ -678,6 +689,8 @@ var PRODUCTS = [
   }
   $('sideBack').addEventListener('click',function(){side='back';render();});
   $('sideFront').addEventListener('click',function(){side='front';render();});
+  $('vPrev').addEventListener('click',function(){stepView(-1);});
+  $('vNext').addEventListener('click',function(){stepView(1);});
   $('productClose').addEventListener('click',closeProduct);
   function needChoices(e){
     var miss=[]; if(!colourPicked)miss.push('colour'); if(!size)miss.push('size');
