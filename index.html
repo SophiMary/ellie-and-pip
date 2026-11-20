@@ -24,7 +24,6 @@
 {"@type":"ListItem","position":6,"item":{"@type":"Product","name":"Do More Of Your Fav Things Oversized T-Shirt","description":"Front chest print: do more of your fav things, in gold script.","image":"img/cover-favthings.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"Offer","price":"519","priceCurrency":"INR","availability":"https://schema.org/InStock"}}},
 {"@type":"ListItem","position":7,"item":{"@type":"Product","name":"More Espresso Less Depresso Oversized T-Shirt","description":"Espresso cup pocket print, More espresso, less depresso slogan on the back.","image":"img/cover-espresso.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"Offer","price":"599","priceCurrency":"INR","availability":"https://schema.org/InStock"}}},
 {"@type":"ListItem","position":8,"item":{"@type":"Product","name":"Yoga Because Punching People Is Wrong Crop Top","description":"Funny women's yoga crop top with a grumpy hand-sketched yogi and the line: Yoga, because punching people is wrong.","image":"img/cover-yoga.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"Offer","price":"529","priceCurrency":"INR","availability":"https://schema.org/InStock"}}},
-{"@type":"ListItem","position":9,"item":{"@type":"Product","name":"Yoga Because Punching People Is Wrong T-Shirt Dress","description":"Funny women's yoga t-shirt dress with a grumpy hand-sketched yogi and the line: Yoga, because punching people is wrong.","image":"img/cover-yogadress.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"Offer","price":"629","priceCurrency":"INR","availability":"https://schema.org/InStock"}}},
 {"@type":"ListItem","position":4,"item":{"@type":"Product","name":"Ellie & Pip Elephant Girls T-Shirt","description":"Cute watercolour elephant and bird t-shirt for girls, sizes 0-12 months to 13 years.","image":"img/cover-kids-girls.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"Offer","price":"449","priceCurrency":"INR","availability":"https://schema.org/InStock"}}},
 {"@type":"ListItem","position":5,"item":{"@type":"Product","name":"Ellie & Pip Elephant Boys T-Shirt","description":"Cute watercolour elephant and bird t-shirt for boys, sizes 0-12 months to 13 years.","image":"img/cover-kids-boys.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"Offer","price":"449","priceCurrency":"INR","availability":"https://schema.org/InStock"}}}
 ]}</script>
@@ -403,8 +402,6 @@ var SIZE_CHARTS = {
     rows: [["XS",40,27],["S",42,28],["M",44,29],["L",46,30],["XL",48,31],["XXL",50,32]] },
   cropTop: { label: "Women's crop top · inches",
     rows: [["XS",32,15.5],["S",34,16.5],["M",36,17.5],["L",38,18.5],["XL",40,19.5],["XXL",42,20.5]] },
-  teeDress: { label: "Women's t-shirt dress · inches",
-    rows: [["S",34,33.5],["M",36,34],["L",38,34.5],["XL",40,35]] },
   kidsGirls: { label: "Girls crew neck tee · inches",
     rows: [["0-12M",18,11.5],["12-23M",20,13],["24-35M",22,14.5],["36-47M",24,16],["5Y",26,17.5],["7Y",28,19],["9Y",30,20.5],["11Y",32,22],["13Y",34,23.5]] },
   kidsBoys: { label: "Boys crew neck tee · inches",
@@ -555,27 +552,6 @@ var PRODUCTS = [
       {c:"3", name:"Navy", hex:"#2E3A4B"}
     ],
     image: function(c, view){ return "img/yoga-" + c + "-" + view + ".webp"; }
-  },
-  {
-    id: "yoga-dress",
-    name: "Yoga Because Punching People Is Wrong T-Shirt Dress",
-    nameHtml: "Yoga <em>Calm</em> Tee Dress",
-    type: "Women's t-shirt dress",
-    price: 629,
-    fit: "women · t-shirt dress",
-    desc: "Same grumpy little yogi, now as a comfy t-shirt dress. She's holding her warrior pose and her temper, and only one of them is working. \"Yoga, because punching people is wrong.\" across the chest.",
-    specs: [["Fit","Women's t-shirt dress: a relaxed, straight cut with half sleeves, falling just above the knee."],["Print","Front print in durable DTF, made fresh for your order."],["Care","Wash inside out in cold water. Do not iron directly on the print. Do not tumble dry."]],
-    sizes: ["S","M","L","XL"],
-    chart: "teeDress",
-    views: [["closeup","Front print"],["model","Full look"],["back","Back"]],
-    startColour: "2",
-    cover: "img/cover-yogadress.webp",
-    colours: [
-      {c:"2", name:"Black", hex:"#2B2B2B"},
-      {c:"3", name:"Navy", hex:"#1C2333"},
-      {c:"10", name:"Red", hex:"#C4161C"}
-    ],
-    image: function(c, view){ return "img/yogadress-" + c + "-" + view + ".webp"; }
   },
   {
     id: "ellie-pip-girls",
@@ -737,7 +713,7 @@ var PRODUCTS = [
 
   function openChart(){
     var ch=SIZE_CHARTS[cur.chart]; $('chartSub').textContent=ch.label;
-    var NOTES={oversized:'Measured on the tee, not your body. For a less roomy look, pick one size down.',cropTop:'Measured on the top, not your body, in inches. It\'s a fitted cut: between sizes, or want it relaxed? Pick one size up.',teeDress:'Measured on the dress, not your body, in inches. Between sizes, or want it looser? Pick one size up.'};
+    var NOTES={oversized:'Measured on the tee, not your body. For a less roomy look, pick one size down.',cropTop:'Measured on the top, not your body, in inches. It\'s a fitted cut: between sizes, or want it relaxed? Pick one size up.'};
     $('chartNote').textContent=NOTES[cur.chart]||'Measured flat on the tee, in inches. Between sizes? Pick the bigger one so they can grow into it.';
     $('chartBody').innerHTML=ch.rows.map(function(r){return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td></tr>';}).join('');
     cm.hidden=false; $('chartClose').focus();
