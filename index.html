@@ -210,22 +210,22 @@ footer{border-top:1px solid var(--blush);padding:40px 0 56px;margin-top:20px}
 
 
 /* reviews */
-.reviews{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,580px));gap:22px}
-.review{background:#fff8f0;border:1.5px solid var(--blush);border-radius:22px;overflow:hidden;display:grid;grid-template-columns:48% 1fr}
-.review img{width:100%;height:100%;object-fit:cover;object-position:top;aspect-ratio:9/13.5;background:#111}
+.reviews{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,720px));gap:22px}
+.review{background:#fff8f0;border:1.5px solid var(--blush);border-radius:22px;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;align-items:start}
+.review > img{width:100%;height:auto;display:block}
 .review-body{padding:22px 20px;display:flex;flex-direction:column;gap:12px;justify-content:center}
 .stars{color:#D9A441;letter-spacing:3px;font-size:18px}
 .review q{font-family:var(--display);font-style:italic;font-size:21px;line-height:1.35;quotes:"\201C" "\201D"}
 .review .who{font-size:15px}.review .who b{display:block}
 .review .who span{opacity:.75;font-size:14px}
 .review-cta{margin-top:20px;font-size:16px}
-.review .chat{width:100%!important;height:auto!important;aspect-ratio:auto!important;object-fit:contain!important;background:none!important;border-radius:14px;margin-top:2px}
+.review .chat{width:100%!important;max-width:300px;height:auto!important;aspect-ratio:auto!important;object-fit:contain!important;background:#0c0f14!important;border-radius:16px;margin-top:2px;border:1.5px solid var(--blush)}
 .chat-label{font-size:13px;opacity:.7;margin-top:-6px}
 .story-link{display:flex;align-items:center;gap:12px;text-decoration:none;font-size:14px;font-weight:700;margin-top:4px}
 .story-link img{width:56px!important;height:auto!important;aspect-ratio:auto!important;border-radius:10px;border:1.5px solid var(--blush)}
 .story-link span{text-decoration:underline;text-underline-offset:3px}
 .review-cta a{font-weight:700}
-@media (max-width:600px){.review{grid-template-columns:1fr}.review img{aspect-ratio:auto;height:auto}.review q{font-size:19px}}
+@media (max-width:600px){.review{grid-template-columns:1fr}.review > img{aspect-ratio:auto;height:auto}.review q{font-size:19px}}
 section{scroll-margin-top:64px}
 /* ===== phone ===== */
 @media (max-width:600px){
@@ -703,8 +703,8 @@ var REVIEWS = [
     if(r.handle){var hl=document.createElement('a');hl.className='story-link';hl.href='https://instagram.com/'+r.handle;hl.target='_blank';hl.rel='noopener';
       hl.innerHTML='<span></span>'; hl.querySelector('span').textContent='@'+r.handle+' on Instagram';
       el.querySelector('.review-body').appendChild(hl);}
-    if(r.chat){var ci=document.createElement('img');ci.className='chat';ci.src=r.chat;ci.loading='lazy';ci.alt=r.name+'\u2019s message to us: got the tshirt, fits well, going to go have filter coffee';
-      var cl=document.createElement('span');cl.className='chat-label';cl.textContent='His message to us on Instagram';
+    if(r.chat){var ci=document.createElement('img');ci.className='chat';ci.src=r.chat;ci.loading='lazy';ci.alt=r.name+'\u2019s Instagram chat with us: unboxing video, photo, and \u201cGot the tshirt fits well, going to go have filter coffee\u201d';
+      var cl=document.createElement('span');cl.className='chat-label';cl.textContent='Our Instagram chat (screenshot)';
       var body=el.querySelector('.review-body'); body.insertBefore(cl,body.querySelector('.who')); body.insertBefore(ci,cl);}
     var src=document.createElement('span'); src.className='who'; src.innerHTML='<span>Shared on his Instagram story</span>'; el.querySelector('.review-body').appendChild(src);
     rg.appendChild(el);
