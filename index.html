@@ -234,6 +234,22 @@ footer{border-top:1px solid var(--blush);padding:40px 0 56px;margin-top:20px}
 .story-link span{text-decoration:underline;text-underline-offset:3px}
 .review-cta a{font-weight:700}
 @media (max-width:600px){.review{grid-template-columns:1fr}.review > img{aspect-ratio:auto;height:auto}.review q{font-size:19px}}
+
+/* idea form */
+.idea{background:var(--blush);border-radius:28px;padding:36px;display:grid;grid-template-columns:1fr 1.2fr;gap:32px;align-items:center}
+.idea h2{font-size:clamp(30px,4.5vw,42px)}
+.idea p{margin-top:10px;max-width:36ch}
+.idea form{display:grid;gap:14px}
+.idea label{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);font-weight:700}
+.idea textarea,.idea input{width:100%;font:inherit;font-size:17px;color:var(--ink);background:var(--paper);border:1.5px solid #fff;border-radius:14px;padding:12px 14px}
+.idea textarea{min-height:110px;resize:vertical}
+.idea textarea:focus,.idea input:focus{outline:3px solid var(--rose);outline-offset:1px}
+.idea .chips{display:flex;flex-wrap:wrap;gap:8px}
+.idea .chips button{border:1.5px solid var(--ink);background:transparent;border-radius:999px;padding:6px 14px;font:600 14px var(--body);color:var(--ink);cursor:pointer}
+.idea .chips button:hover{background:var(--paper)}
+.idea .btn{justify-content:center;cursor:pointer;font-family:var(--body)}
+.idea-err{color:#B4463A;font-weight:700;font-size:15px}
+@media (max-width:760px){.idea{grid-template-columns:1fr;padding:26px;gap:20px}}
 section{scroll-margin-top:64px}
 /* ===== phone ===== */
 @media (max-width:600px){
@@ -331,6 +347,33 @@ section{scroll-margin-top:64px}
       <div class="section-head"><h2>Happy customers</h2><span class="hand">real people, real tees</span></div>
       <div class="reviews" id="reviewGrid"></div>
       <p class="review-cta note">Got yours? <a href="https://ig.me/m/ellie_n_pip">Send us a photo on Instagram</a> and we'll feature you here.</p>
+    </div>
+  </section>
+
+  <section id="ideas">
+    <div class="wrap">
+      <div class="idea">
+        <div>
+          <span class="hand">your idea, our next drop</span>
+          <h2>What should we make next?</h2>
+          <p>A food you miss, a line your amma always says, a tee you wish existed. Tell us, and if we make it, the first one's yours at a special price.</p>
+        </div>
+        <form id="ideaForm" novalidate>
+          <label for="ideaText">Your idea</label>
+          <div class="chips" aria-label="Need a starting point?">
+            <button type="button" data-t="A Kannada slogan tee: ">Kannada slogan</button>
+            <button type="button" data-t="A Malayalam slogan tee: ">Malayalam slogan</button>
+            <button type="button" data-t="A food tee about ">Food tee</button>
+            <button type="button" data-t="A kids tee with ">Kids tee</button>
+          </div>
+          <textarea id="ideaText" maxlength="500" placeholder="e.g. a masala dosa tee that says 'Ondu masala dose, ondu coffee'"></textarea>
+          <label for="ideaName">Your name <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+          <input id="ideaName" maxlength="60" autocomplete="given-name">
+          <p class="idea-err" id="ideaErr" role="alert" hidden>Tell us your idea first.</p>
+          <button type="submit" class="btn btn-primary">Send idea on WhatsApp</button>
+          <p class="note">Opens WhatsApp with your idea ready to send.</p>
+        </form>
+      </div>
     </div>
   </section>
 
@@ -702,6 +745,18 @@ var REVIEWS = [
     grid.appendChild(card);
   });
 
+
+  (function(){
+    var f=document.getElementById('ideaForm'), t=document.getElementById('ideaText'), n=document.getElementById('ideaName'), err=document.getElementById('ideaErr');
+    Array.prototype.forEach.call(f.querySelectorAll('.chips button'),function(b){b.addEventListener('click',function(){if(!t.value.trim())t.value=b.dataset.t;t.focus();t.setSelectionRange(t.value.length,t.value.length);});});
+    t.addEventListener('input',function(){if(t.value.trim())err.hidden=true;});
+    f.addEventListener('submit',function(e){
+      e.preventDefault(); var idea=t.value.trim();
+      if(!idea){err.hidden=false;t.focus();return;}
+      var msg="Hi Ellie & Pip! I have an idea for your next design:\n\n"+idea+(n.value.trim()?"\n\n— "+n.value.trim():"");
+      window.open('https://wa.me/918892181354?text='+encodeURIComponent(msg),'_blank','noopener');
+    });
+  })();
   var rg=document.getElementById('reviewGrid');
   REVIEWS.forEach(function(r){
     var el=document.createElement('figure'); el.className='review';
