@@ -355,7 +355,7 @@ section{scroll-margin-top:64px}
         </div>
         <div class="price"><strong id="pPrice"></strong><span class="hand" id="pFit" style="font-size:26px"></span></div>
         <div class="specs" id="pSpecs"></div>
-        <div class="photos" id="pPhotos" hidden><span class="opt-label">Real photos</span><div class="photos-row" id="pPhotoRow" role="group" aria-label="Real photos"></div></div>
+        <div class="photos" id="pPhotos" hidden><span class="opt-label" id="pPhotosLabel">Real photos</span><div class="photos-row" id="pPhotoRow" role="group" aria-label="Real photos"></div></div>
         <img id="pFitImg" alt="Girls fit compared with boys fit" hidden style="width:100%;border-radius:16px;border:1.5px solid var(--blush)">
         <p class="note" id="pNeed" role="alert" hidden style="color:#B4463A;font-weight:700;opacity:1"></p>
         <div class="cta pm-cta" style="margin-top:4px">
@@ -530,6 +530,8 @@ var PRODUCTS = [
     sides: ["front"],
     startColour: "2",
     cover: "img/cover-yoga.webp",
+    photosLabel: "More views (mockups)",
+    photos: [["img/yoga-2-closeup.webp","Black, print close-up"],["img/yoga-2-model.webp","Black, full look"],["img/yoga-3-closeup.webp","Navy, print close-up"],["img/yoga-3-model.webp","Navy, full look"]],
     colours: [
       {c:"2", name:"Black", hex:"#2B2B2B"},
       {c:"3", name:"Navy", hex:"#2E3A4B"}
@@ -645,7 +647,7 @@ var PRODUCTS = [
     p.sizes.forEach(function(z){var b=document.createElement('button');b.type='button';b.className='sz';b.dataset.s=z;b.textContent=z;b.setAttribute('aria-pressed','false');b.addEventListener('click',function(){size=z;render();});sz.appendChild(b);});
     $('pSpecs').innerHTML=p.specs.map(function(r){return '<div class="spec"><b>'+r[0]+'</b><span>'+r[1]+'</span></div>';}).join('');
     $('chartOpen').hidden=!p.chart;
-    var pr=$('pPhotoRow'); pr.innerHTML=''; $('pPhotos').hidden=!p.photos;
+    var pr=$('pPhotoRow'); pr.innerHTML=''; $('pPhotos').hidden=!p.photos; $('pPhotosLabel').textContent=p.photosLabel||'Real photos'; pr.setAttribute('aria-label',p.photosLabel||'Real photos');
     (p.photos||[]).forEach(function(ph){
       var b=document.createElement('button'); b.type='button'; b.setAttribute('aria-label',ph[1]);
       b.innerHTML='<img src="'+ph[0]+'" alt="" loading="lazy">';
