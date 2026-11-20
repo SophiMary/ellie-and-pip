@@ -213,11 +213,19 @@ footer{border-top:1px solid var(--blush);padding:40px 0 56px;margin-top:20px}
 .reviews{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,720px));gap:22px}
 .review{background:#fff8f0;border:1.5px solid var(--blush);border-radius:22px;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;align-items:start}
 .review > img{width:100%;height:auto;display:block}
-.review-body{padding:22px 20px;display:flex;flex-direction:column;gap:12px;justify-content:center}
+.review-body{padding:22px 20px;display:flex;flex-direction:column;gap:12px;justify-content:center;align-self:center}
 .stars{color:#D9A441;letter-spacing:3px;font-size:18px}
 .review q{font-family:var(--display);font-style:italic;font-size:21px;line-height:1.35;quotes:"\201C" "\201D"}
 .review .who{font-size:15px}.review .who b{display:block}
 .review .who span{opacity:.75;font-size:14px}
+.rslider{position:relative;overflow:hidden;background:#0c0f14;aspect-ratio:9/12}
+.rtrack{display:flex;height:100%;transition:transform .35s ease}
+.rtrack img{flex:0 0 100%;width:100%;height:100%;object-fit:contain;background:#0c0f14}
+.rarrow{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;border:0;background:rgba(253,246,237,.92);color:var(--ink);font-size:28px;line-height:1;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.25);display:grid;place-items:center;padding-bottom:3px}
+.rprev{left:10px}.rnext{right:10px}
+.rdots{position:absolute;bottom:12px;left:0;right:0;display:flex;justify-content:center;gap:8px}
+.rdots button{width:9px;height:9px;border-radius:50%;border:0;padding:0;background:rgba(253,246,237,.5);cursor:pointer}
+.rdots button.on{background:#fff}
 .review-cta{margin-top:20px;font-size:16px}
 .review .chat{width:100%!important;max-width:300px;height:auto!important;aspect-ratio:auto!important;object-fit:contain!important;background:#0c0f14!important;border-radius:16px;margin-top:2px;border:1.5px solid var(--blush)}
 .chat-label{font-size:13px;opacity:.7;margin-top:-6px}
@@ -697,15 +705,24 @@ var REVIEWS = [
   var rg=document.getElementById('reviewGrid');
   REVIEWS.forEach(function(r){
     var el=document.createElement('figure'); el.className='review';
-    el.innerHTML='<img src="'+r.photo+'" alt="" loading="lazy"><figcaption class="review-body"><q></q><span class="who"><b></b><span></span></span></figcaption>';
-    el.querySelector('img').alt=r.photoAlt; el.querySelector('q').textContent=r.text;
+    el.innerHTML='<div class="rslider"><div class="rtrack"></div><button type="button" class="rarrow rprev" aria-label="Previous photo">&#8249;</button><button type="button" class="rarrow rnext" aria-label="Next photo">&#8250;</button><div class="rdots"></div></div><figcaption class="review-body"><q></q><span class="who"><b></b><span></span></span></figcaption>';
+    var slides=[[r.photo,r.photoAlt,'His Instagram story']].concat(r.chat?[[r.chat,r.name+'\u2019s Instagram chat with us: photo of the tee and \u201cGot the tshirt fits well, going to go have filter coffee\u201d','Our Instagram chat']]:[]);
+    var tr=el.querySelector('.rtrack'), dots=el.querySelector('.rdots'), idx=0;
+    slides.forEach(function(sl,k){var im=document.createElement('img');im.src=sl[0];im.alt=sl[1];im.loading='lazy';tr.appendChild(im);
+      var d=document.createElement('button');d.type='button';d.setAttribute('aria-label','Show '+sl[2]);d.addEventListener('click',function(){go(k);});dots.appendChild(d);});
+    function go(k){idx=(k+slides.length)%slides.length;tr.style.transform='translateX('+(-100*idx)+'%)';
+      Array.prototype.forEach.call(dots.children,function(d,n){d.classList.toggle('on',n===idx);d.setAttribute('aria-current',n===idx?'true':'false');});}
+    el.querySelector('.rprev').addEventListener('click',function(){go(idx-1);});
+    el.querySelector('.rnext').addEventListener('click',function(){go(idx+1);});
+    if(slides.length<2){el.querySelector('.rprev').hidden=true;el.querySelector('.rnext').hidden=true;dots.hidden=true;}
+    var sx=null; tr.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
+    tr.addEventListener('touchend',function(e){if(sx===null)return;var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40)go(idx+(dx<0?1:-1));sx=null;});
+    go(0);
+    el.querySelector('q').textContent=r.text;
     el.querySelector('.who b').textContent=r.name; el.querySelector('.who span').textContent=r.product;
     if(r.handle){var hl=document.createElement('a');hl.className='story-link';hl.href='https://instagram.com/'+r.handle;hl.target='_blank';hl.rel='noopener';
       hl.innerHTML='<span></span>'; hl.querySelector('span').textContent='@'+r.handle+' on Instagram';
       el.querySelector('.review-body').appendChild(hl);}
-    if(r.chat){var ci=document.createElement('img');ci.className='chat';ci.src=r.chat;ci.loading='lazy';ci.alt=r.name+'\u2019s Instagram chat with us: unboxing video, photo, and \u201cGot the tshirt fits well, going to go have filter coffee\u201d';
-      var cl=document.createElement('span');cl.className='chat-label';cl.textContent='Our Instagram chat (screenshot)';
-      var body=el.querySelector('.review-body'); body.insertBefore(cl,body.querySelector('.who')); body.insertBefore(ci,cl);}
     var src=document.createElement('span'); src.className='who'; src.innerHTML='<span>Shared on his Instagram story</span>'; el.querySelector('.review-body').appendChild(src);
     rg.appendChild(el);
   });
