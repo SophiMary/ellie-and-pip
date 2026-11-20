@@ -219,6 +219,8 @@ footer{border-top:1px solid var(--blush);padding:40px 0 56px;margin-top:20px}
 .review .who{font-size:15px}.review .who b{display:block}
 .review .who span{opacity:.75;font-size:14px}
 .review-cta{margin-top:20px;font-size:16px}
+.review .chat{width:100%!important;height:auto!important;aspect-ratio:auto!important;object-fit:contain!important;background:none!important;border-radius:14px;margin-top:2px}
+.chat-label{font-size:13px;opacity:.7;margin-top:-6px}
 .story-link{display:flex;align-items:center;gap:12px;text-decoration:none;font-size:14px;font-weight:700;margin-top:4px}
 .story-link img{width:56px!important;height:auto!important;aspect-ratio:auto!important;border-radius:10px;border:1.5px solid var(--blush)}
 .story-link span{text-decoration:underline;text-underline-offset:3px}
@@ -666,7 +668,7 @@ var PRODUCTS = [
 
 /* ===== REVIEWS: real customer reviews only, shared with their permission ===== */
 var REVIEWS = [
-  { name: "Sudeep", product: "Filter Coffee Tee · White", photo: "img/review-sudeep-story.webp",
+  { name: "Sudeep", product: "Filter Coffee Tee · White", photo: "img/review-sudeep-story.webp", chat: "img/review-sudeep-chat.webp",
     photoAlt: "Sudeep\u2019s Instagram story: wearing the white Filter Coffee tee with his cat, tagging @ellie_n_pip",
     text: "Got the t-shirt, fits well \uD83D\uDE04 Going to go have filter coffee. Thank you for the cool print!" }
 ];
@@ -701,6 +703,9 @@ var REVIEWS = [
     if(r.handle){var hl=document.createElement('a');hl.className='story-link';hl.href='https://instagram.com/'+r.handle;hl.target='_blank';hl.rel='noopener';
       hl.innerHTML='<span></span>'; hl.querySelector('span').textContent='@'+r.handle+' on Instagram';
       el.querySelector('.review-body').appendChild(hl);}
+    if(r.chat){var ci=document.createElement('img');ci.className='chat';ci.src=r.chat;ci.loading='lazy';ci.alt=r.name+'\u2019s message to us: got the tshirt, fits well, going to go have filter coffee';
+      var cl=document.createElement('span');cl.className='chat-label';cl.textContent='His message to us on Instagram';
+      var body=el.querySelector('.review-body'); body.insertBefore(cl,body.querySelector('.who')); body.insertBefore(ci,cl);}
     var src=document.createElement('span'); src.className='who'; src.innerHTML='<span>Shared on his Instagram story</span>'; el.querySelector('.review-body').appendChild(src);
     rg.appendChild(el);
   });
