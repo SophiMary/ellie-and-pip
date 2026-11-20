@@ -152,6 +152,7 @@ section{padding:56px 0}
 .pm-info h3{font-size:38px;padding-right:40px}.pm-info h3 em{font-weight:400;color:var(--rose)}
 .product-card .modal-x{z-index:2}
 #chartModal{z-index:30}
+#chartModal .modal-card{max-height:calc(100vh - 40px);overflow:auto}
 #chartModal table{width:100%;border-collapse:collapse;margin:16px 0 12px;font-variant-numeric:tabular-nums}
 #chartModal th,#chartModal td{border:1px solid var(--blush);padding:9px 10px;text-align:center}
 #chartModal th{background:var(--blush)}
@@ -689,7 +690,8 @@ var PRODUCTS = [
 
   function openChart(){
     var ch=SIZE_CHARTS[cur.chart]; $('chartSub').textContent=ch.label;
-    $('chartNote').textContent=cur.chart==='oversized'?'Measured on the tee, not your body. For a less roomy look, pick one size down.':'Measured flat on the tee, in inches. Between sizes? Pick the bigger one so they can grow into it.';
+    var NOTES={oversized:'Measured on the tee, not your body. For a less roomy look, pick one size down.',cropTop:'Measured on the top, not your body, in inches. It\'s a fitted cut: between sizes, or want it relaxed? Pick one size up.'};
+    $('chartNote').textContent=NOTES[cur.chart]||'Measured flat on the tee, in inches. Between sizes? Pick the bigger one so they can grow into it.';
     $('chartBody').innerHTML=ch.rows.map(function(r){return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td></tr>';}).join('');
     cm.hidden=false; $('chartClose').focus();
   }
