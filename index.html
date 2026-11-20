@@ -67,6 +67,19 @@ nav{display:flex;gap:22px;font-size:15px;letter-spacing:.06em}
 nav a{text-decoration:none}
 nav a:hover{color:var(--rose)}
 @media (max-width:560px){nav .hide-sm{display:none}}
+.menu-btn{display:none}
+@media (max-width:760px){
+  .menu-btn{display:grid;gap:5px;width:44px;height:44px;place-content:center;border:0;background:transparent;cursor:pointer;padding:0;margin-right:-8px}
+  .menu-btn span{display:block;width:24px;height:2px;border-radius:2px;background:var(--ink);transition:transform .2s,opacity .2s}
+  .menu-btn[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .menu-btn[aria-expanded="true"] span:nth-child(2){opacity:0}
+  .menu-btn[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  header nav{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;background:var(--paper);border-bottom:1px solid var(--blush);box-shadow:0 12px 24px rgba(78,51,40,.10);padding:6px 0 10px}
+  header nav.open{display:flex}
+  header nav a{padding:14px 20px;font-size:17px;letter-spacing:.04em;border-top:1px solid var(--blush)}
+  header nav a:first-child{border-top:0}
+  header .bar{position:relative}
+}
 
 /* hero */
 .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;padding-top:56px;padding-bottom:40px}
@@ -306,11 +319,12 @@ section{scroll-margin-top:64px}
 <header>
   <div class="wrap bar">
     <a class="brand" href="#top">Ellie <span class="amp">&amp;</span> Pip</a>
-    <nav aria-label="Main">
+    <button type="button" class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="mainNav" aria-label="Open menu"><span></span><span></span><span></span></button>
+    <nav aria-label="Main" id="mainNav">
       <a href="#shop">Shop</a>
-      <a href="#reviews" class="hide-sm">Reviews</a>
-      <a href="#ideas" class="hide-sm">Ideas</a>
-      <a href="#story" class="hide-sm">Our story</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#ideas">Ideas</a>
+      <a href="#story">Our story</a>
       <a href="#order">How to order</a>
     </nav>
   </div>
@@ -744,6 +758,15 @@ var REVIEWS = [
   (function(){ /* a Google Form reloads its frame after submit: shrink the box to fit the thank-you note */
     var fr=document.getElementById('ideaFrame'), loads=0;
     if(fr) fr.addEventListener('load',function(){ loads++; if(loads>1) fr.classList.add('done'); });
+  })();
+
+  (function(){
+    var b=document.getElementById('menuBtn'), n=document.getElementById('mainNav');
+    function set(o){n.classList.toggle('open',o);b.setAttribute('aria-expanded',o?'true':'false');b.setAttribute('aria-label',o?'Close menu':'Open menu');}
+    b.addEventListener('click',function(){set(!n.classList.contains('open'));});
+    Array.prototype.forEach.call(n.querySelectorAll('a'),function(a){a.addEventListener('click',function(){set(false);});});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&n.classList.contains('open')){set(false);b.focus();}});
+    document.addEventListener('click',function(e){if(n.classList.contains('open')&&!n.contains(e.target)&&!b.contains(e.target))set(false);});
   })();
   var rg=document.getElementById('reviewGrid');
   REVIEWS.forEach(function(r){
