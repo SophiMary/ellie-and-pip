@@ -212,15 +212,18 @@ footer{border-top:1px solid var(--blush);padding:40px 0 56px;margin-top:20px}
 /* reviews */
 .reviews{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,580px));gap:22px}
 .review{background:#fff8f0;border:1.5px solid var(--blush);border-radius:22px;overflow:hidden;display:grid;grid-template-columns:48% 1fr}
-.review img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/5}
+.review img{width:100%;height:100%;object-fit:cover;object-position:top;aspect-ratio:9/13.5;background:#111}
 .review-body{padding:22px 20px;display:flex;flex-direction:column;gap:12px;justify-content:center}
 .stars{color:#D9A441;letter-spacing:3px;font-size:18px}
 .review q{font-family:var(--display);font-style:italic;font-size:21px;line-height:1.35;quotes:"\201C" "\201D"}
 .review .who{font-size:15px}.review .who b{display:block}
 .review .who span{opacity:.75;font-size:14px}
 .review-cta{margin-top:20px;font-size:16px}
+.story-link{display:flex;align-items:center;gap:12px;text-decoration:none;font-size:14px;font-weight:700;margin-top:4px}
+.story-link img{width:56px!important;height:auto!important;aspect-ratio:auto!important;border-radius:10px;border:1.5px solid var(--blush)}
+.story-link span{text-decoration:underline;text-underline-offset:3px}
 .review-cta a{font-weight:700}
-@media (max-width:600px){.review{grid-template-columns:1fr}.review img{aspect-ratio:4/4}.review q{font-size:19px}}
+@media (max-width:600px){.review{grid-template-columns:1fr}.review img{aspect-ratio:auto;height:auto}.review q{font-size:19px}}
 section{scroll-margin-top:64px}
 /* ===== phone ===== */
 @media (max-width:600px){
@@ -663,8 +666,8 @@ var PRODUCTS = [
 
 /* ===== REVIEWS: real customer reviews only, shared with their permission ===== */
 var REVIEWS = [
-  { name: "Sudeep", product: "Filter Coffee Tee · White", photo: "img/review-sudeep.webp",
-    photoAlt: "Sudeep wearing the white Filter Coffee tee, with his cat on his shoulder",
+  { name: "Sudeep", product: "Filter Coffee Tee · White", photo: "img/review-sudeep-story.webp", handle: "sudeep_raj_c",
+    photoAlt: "Sudeep\u2019s Instagram story: wearing the white Filter Coffee tee with his cat, tagging @ellie_n_pip",
     text: "Got the t-shirt, fits well \uD83D\uDE04 Going to go have filter coffee. Thank you for the cool print!" }
 ];
 /* ================================================================ */
@@ -695,6 +698,10 @@ var REVIEWS = [
     el.innerHTML='<img src="'+r.photo+'" alt="" loading="lazy"><figcaption class="review-body"><q></q><span class="who"><b></b><span></span></span></figcaption>';
     el.querySelector('img').alt=r.photoAlt; el.querySelector('q').textContent=r.text;
     el.querySelector('.who b').textContent=r.name; el.querySelector('.who span').textContent=r.product;
+    if(r.handle){var hl=document.createElement('a');hl.className='story-link';hl.href='https://instagram.com/'+r.handle;hl.target='_blank';hl.rel='noopener';
+      hl.innerHTML='<span></span>'; hl.querySelector('span').textContent='@'+r.handle+' on Instagram';
+      el.querySelector('.review-body').appendChild(hl);}
+    var src=document.createElement('span'); src.className='who'; src.innerHTML='<span>Shared on his Instagram story</span>'; el.querySelector('.review-body').appendChild(src);
     rg.appendChild(el);
   });
   if(!REVIEWS.length) document.getElementById('reviews').hidden=true;
