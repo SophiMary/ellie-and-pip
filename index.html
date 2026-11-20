@@ -208,6 +208,19 @@ footer{border-top:1px solid var(--blush);padding:40px 0 56px;margin-top:20px}
 .ig-link svg,.wa-link svg{flex:none}
 .foot .tagline{font-size:13px;letter-spacing:.28em;text-transform:uppercase}
 
+
+/* reviews */
+.reviews{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,580px));gap:22px}
+.review{background:#fff8f0;border:1.5px solid var(--blush);border-radius:22px;overflow:hidden;display:grid;grid-template-columns:48% 1fr}
+.review img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/5}
+.review-body{padding:22px 20px;display:flex;flex-direction:column;gap:12px;justify-content:center}
+.stars{color:#D9A441;letter-spacing:3px;font-size:18px}
+.review q{font-family:var(--display);font-style:italic;font-size:21px;line-height:1.35;quotes:"\201C" "\201D"}
+.review .who{font-size:15px}.review .who b{display:block}
+.review .who span{opacity:.75;font-size:14px}
+.review-cta{margin-top:20px;font-size:16px}
+.review-cta a{font-weight:700}
+@media (max-width:600px){.review{grid-template-columns:1fr}.review img{aspect-ratio:4/4}.review q{font-size:19px}}
 section{scroll-margin-top:64px}
 /* ===== phone ===== */
 @media (max-width:600px){
@@ -263,6 +276,7 @@ section{scroll-margin-top:64px}
     <nav aria-label="Main">
       <a href="#shop">Shop</a>
       <a href="#story" class="hide-sm">Our story</a>
+      <a href="#reviews" class="hide-sm">Reviews</a>
       <a href="#order">How to order</a>
     </nav>
   </div>
@@ -296,6 +310,14 @@ section{scroll-margin-top:64px}
         <div class="soon"><span class="soon-tag">Coming soon</span><h3>Home decor</h3><p>Little things for your shelves and walls.</p></div>
         <div class="soon"><span class="soon-tag">Coming soon</span><h3>3D-printed treasures</h3><p>Tiny keepsakes, designed and printed with love.</p></div>
       </div>
+    </div>
+  </section>
+
+  <section id="reviews">
+    <div class="wrap">
+      <div class="section-head"><h2>Happy customers</h2><span class="hand">real people, real tees</span></div>
+      <div class="reviews" id="reviewGrid"></div>
+      <p class="review-cta note">Got yours? <a href="https://ig.me/m/ellie_n_pip">Send us a photo on Instagram</a> and we'll feature you here.</p>
     </div>
   </section>
 
@@ -639,6 +661,14 @@ var PRODUCTS = [
 ];
 /* ================================================================ */
 
+/* ===== REVIEWS: real customer reviews only, shared with their permission ===== */
+var REVIEWS = [
+  { name: "Sudeep", product: "Filter Coffee Tee · White", photo: "img/review-sudeep.webp",
+    photoAlt: "Sudeep wearing the white Filter Coffee tee, with his cat on his shoulder",
+    text: "Got the t-shirt, fits well \uD83D\uDE04 Going to go have filter coffee. Thank you for the cool print!" }
+];
+/* ================================================================ */
+
 (function(){
   var grid=document.getElementById('productGrid');
   var pm=document.getElementById('productModal'), cm=document.getElementById('chartModal');
@@ -658,6 +688,16 @@ var PRODUCTS = [
     card.addEventListener('click',function(){openProduct(p);});
     grid.appendChild(card);
   });
+
+  var rg=document.getElementById('reviewGrid');
+  REVIEWS.forEach(function(r){
+    var el=document.createElement('figure'); el.className='review';
+    el.innerHTML='<img src="'+r.photo+'" alt="" loading="lazy"><figcaption class="review-body"><q></q><span class="who"><b></b><span></span></span></figcaption>';
+    el.querySelector('img').alt=r.photoAlt; el.querySelector('q').textContent=r.text;
+    el.querySelector('.who b').textContent=r.name; el.querySelector('.who span').textContent=r.product;
+    rg.appendChild(el);
+  });
+  if(!REVIEWS.length) document.getElementById('reviews').hidden=true;
 
   function render(){
     Array.prototype.forEach.call($('pPhotoRow').children,function(b){b.classList.remove('on');});
