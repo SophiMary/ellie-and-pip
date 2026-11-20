@@ -250,7 +250,8 @@ footer{border-top:1px solid var(--blush);padding:40px 0 56px;margin-top:20px}
 .idea .btn{justify-content:center;cursor:pointer;font-family:var(--body)}
 .idea-err{color:#B4463A;font-weight:700;font-size:15px}
 .idea-embed{display:grid;gap:10px}
-.idea-embed iframe{width:100%;height:760px;border:0;border-radius:18px;background:#fff}
+.idea-embed iframe{width:100%;height:760px;border:0;border-radius:18px;background:#fff;transition:height .3s}
+.idea-embed iframe.done{height:300px!important}
 @media (max-width:600px){.idea-embed iframe{height:860px}}
 @media (max-width:760px){.idea{grid-template-columns:1fr;padding:26px;gap:20px}}
 section{scroll-margin-top:64px}
@@ -308,6 +309,7 @@ section{scroll-margin-top:64px}
     <nav aria-label="Main">
       <a href="#shop">Shop</a>
       <a href="#reviews" class="hide-sm">Reviews</a>
+      <a href="#ideas" class="hide-sm">Ideas</a>
       <a href="#story" class="hide-sm">Our story</a>
       <a href="#order">How to order</a>
     </nav>
@@ -362,7 +364,7 @@ section{scroll-margin-top:64px}
           <p>A food you miss, a line your amma always says, a tee you wish existed. Tell us, and if we make it, the first one's yours at a special price.</p>
         </div>
         <div class="idea-embed">
-          <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfViHLLII7TdNNs2TJLFXakcmrcf9OgcmxHeP_fb-eDt4943A/viewform?embedded=true" title="Tell us what we should print next" loading="lazy">Loading…</iframe>
+          <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfViHLLII7TdNNs2TJLFXakcmrcf9OgcmxHeP_fb-eDt4943A/viewform?embedded=true" title="Tell us what we should print next" loading="lazy" id="ideaFrame">Loading…</iframe>
           <p class="note">Rather chat? <a href="https://wa.me/918892181354?text=Hi%20Ellie%20%26%20Pip!%20I%20have%20an%20idea%20for%20your%20next%20design%3A%20">Send your idea on WhatsApp</a></p>
         </div>
       </div>
@@ -738,6 +740,11 @@ var REVIEWS = [
   });
 
 
+
+  (function(){ /* a Google Form reloads its frame after submit: shrink the box to fit the thank-you note */
+    var fr=document.getElementById('ideaFrame'), loads=0;
+    if(fr) fr.addEventListener('load',function(){ loads++; if(loads>1) fr.classList.add('done'); });
+  })();
   var rg=document.getElementById('reviewGrid');
   REVIEWS.forEach(function(r){
     var el=document.createElement('figure'); el.className='review';
