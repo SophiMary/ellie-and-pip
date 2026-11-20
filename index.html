@@ -723,7 +723,6 @@ var REVIEWS = [
     if(r.handle){var hl=document.createElement('a');hl.className='story-link';hl.href='https://instagram.com/'+r.handle;hl.target='_blank';hl.rel='noopener';
       hl.innerHTML='<span></span>'; hl.querySelector('span').textContent='@'+r.handle+' on Instagram';
       el.querySelector('.review-body').appendChild(hl);}
-    var src=document.createElement('span'); src.className='who'; src.innerHTML='<span>Shared on his Instagram story</span>'; el.querySelector('.review-body').appendChild(src);
     rg.appendChild(el);
   });
   if(!REVIEWS.length) document.getElementById('reviews').hidden=true;
