@@ -703,7 +703,7 @@ var PRODUCTS = [
     cardPrice: "from \u20B9449",
     fit: "matching set",
     desc: "A dino for everyone in the house. Mamasaurus, Dadasaurus and a little Babysaurus, hand-drawn and printed to match. Prefer Amma and Appa? Switch the names to Ammasaurus and Appasaurus.",
-    specs: [["Adult tee","Unisex oversized, 100% cotton, 180 GSM, with extra length and a dropped sleeve."],["Kids tee","Soft cotton crew neck, sizes 0-12 months to 13 years."],["Print","Front print in durable DTF, made fresh for your order."],["Care","Wash inside out in cold water. Do not iron directly on the print. Do not tumble dry."]],
+    specs: [["Adult tee","Unisex oversized, 100% cotton, 180 GSM, with extra length and a dropped sleeve."],["Kids tee","Soft cotton crew neck in a boys or girls cut, sizes 0-12 months to 13 years. The girls cut comes in fewer colours."],["Print","Front print in durable DTF, made fresh for your order."],["Care","Wash inside out in cold water. Do not iron directly on the print. Do not tumble dry."]],
     sizes: ["0-12M","XXL"],
     sides: ["front"],
     startColour: "4",
@@ -725,6 +725,11 @@ var PRODUCTS = [
       dad: {label:"Dad", sizes:["XS","S","M","L","XL","XXL"], chart:"oversized"},
       kid: {label:"Kid", sizes:["0-12M","12-23M","24-35M","36-47M","5Y","7Y","9Y","11Y","13Y"], chart:"kidsBoys"}
     },
+    kidFits: [
+      {k:"boy", label:"Boy", chart:"kidsBoys", note:"Boys cut: straight and roomy."},
+      {k:"girl", label:"Girl", chart:"kidsGirls", note:"Girls cut: slightly fitted, a little shorter, softer neckline. Fewer colours.",
+       colours:["1","4","2","3"], soloColours:["1","4","2","3","28","10","9"]}
+    ],
     colours: [
       {c:"1", name:"White", hex:"#FFFFFF"},
       {c:"4", name:"Grey", hex:"#BCC0C3"},
@@ -732,9 +737,12 @@ var PRODUCTS = [
       {c:"49", name:"Lavender", hex:"#D4D4EE"},
       {c:"51", name:"Beige", hex:"#EFDFAC"},
       {c:"2", name:"Black", hex:"#2B2B2B"},
-      {c:"3", name:"Navy", hex:"#2E3A4B"}
+      {c:"3", name:"Navy", hex:"#2E3A4B"},
+      {c:"28", name:"Pink (girls)", hex:"#D25383", girlOnly:true},
+      {c:"10", name:"Red", hex:"#90191A", girlOnly:true},
+      {c:"9", name:"Royal blue", hex:"#343B72", girlOnly:true}
     ],
-    image: function(c, set, name){ return "img/dino-" + c + "-" + (set||"family") + "-" + (name||"en") + ".webp"; }
+    image: function(c, set, name, fit){ return "img/dino-" + c + "-" + (set||"family") + "-" + (name||"en") + (fit==="girl" && set!=="mom" && set!=="dad" ? "-g" : "") + ".webp"; }
   },
   {
     id: "ellie-pip-girls",
@@ -808,7 +816,7 @@ var REVIEWS = [
   var grid=document.getElementById('productGrid');
   var pm=document.getElementById('productModal'), cm=document.getElementById('chartModal');
   var cur=null, colour=null, size=null, side='back', lastFocus=null, colourPicked=false;
-  var setK=null, nameK='en', msz={}, chartBtn=null;
+  var setK=null, nameK='en', fitK='boy', msz={}, chartBtn=null;
   function $(id){return document.getElementById(id);}
   function rupee(n){return "\u20B9"+n;}
 
@@ -819,8 +827,8 @@ var REVIEWS = [
     card.innerHTML='<div class="pimg'+(p.cover?' pcover':'')+'"><img src="'+(p.cover||p.image(start.c,(p.sides||['back','front'])[0]))+'" alt="'+p.name+' by Ellie &amp; Pip" loading="lazy"></div>'+
       '<div class="pbody"><span class="ptype">'+p.type+'</span><h3>'+p.nameHtml+'</h3>'+
       '<div class="prow"><strong>'+(p.cardPrice||rupee(p.price))+'</strong><span class="dots">'+
-      p.colours.map(function(x){return '<i style="background:'+x.hex+'"></i>';}).join('')+
-      '</span></div><span class="pcount">'+p.colours.length+' colours · '+p.sizes[0]+'–'+p.sizes[p.sizes.length-1]+'</span></div>';
+      p.colours.filter(function(x){return !x.girlOnly;}).map(function(x){return '<i style="background:'+x.hex+'"></i>';}).join('')+
+      '</span></div><span class="pcount">'+p.colours.filter(function(x){return !x.girlOnly;}).length+' colours · '+p.sizes[0]+'–'+p.sizes[p.sizes.length-1]+'</span></div>';
     card.addEventListener('click',function(){openProduct(p);});
     grid.appendChild(card);
   });
@@ -888,6 +896,13 @@ var REVIEWS = [
   }
   function curSet(){return cur.sets.filter(function(x){return x.k===setK;})[0];}
   function curName(){return cur.names.filter(function(x){return x.k===nameK;})[0];}
+  function curFit(){return cur.kidFits.filter(function(x){return x.k===fitK;})[0];}
+  function hasKid(){return curSet().members.indexOf('kid')>=0;}
+  function availColours(){
+    var st=curSet(), f=curFit();
+    if(!hasKid()||!f.colours) return cur.colours.filter(function(x){return !x.girlOnly;}).map(function(x){return x.c;});
+    return st.members.length===1 ? f.soloColours : f.colours;
+  }
   function memberLabel(m){var n=curName(); return m==='kid'?'Babysaurus':n[m];}
   function missing(){
     var miss=[]; if(!colourPicked)miss.push('colour');
@@ -905,24 +920,31 @@ var REVIEWS = [
     }
     group('Set','pSet',cur.sets.map(function(x){return {k:x.k,label:x.label,btn:x.label+' · '+rupee(x.price)};}),function(k){setK=k;render();});
     group('Names','pNames',cur.names,function(k){nameK=k;render();});
+    group('Kid fit','pFitK',cur.kidFits,function(k){fitK=k;render();});
     box.hidden=false;
   }
   function buildMemberSizes(){
     var box=$('pMemberSizes'); box.innerHTML='';
     curSet().members.forEach(function(m){
       var mm=cur.members[m], o=document.createElement('div'); o.className='opt';
-      o.innerHTML='<span class="opt-label">'+memberLabel(m)+' size ('+mm.label.toLowerCase()+'): <b>'+(msz[m]||'pick one')+'</b></span><div class="sizes" role="group"></div><button type="button" class="chart-btn" aria-haspopup="dialog">Size chart</button>';
+      var who=m==='kid'?'kid \u00B7 '+curFit().label.toLowerCase():mm.label.toLowerCase();
+      o.innerHTML='<span class="opt-label">'+memberLabel(m)+' size ('+who+'): <b>'+(msz[m]||'pick one')+'</b></span><div class="sizes" role="group"></div><button type="button" class="chart-btn" aria-haspopup="dialog">Size chart</button>';
       var g=o.querySelector('.sizes'); g.setAttribute('aria-label',mm.label+' size');
       mm.sizes.forEach(function(z){var b=document.createElement('button');b.type='button';b.className='sz'+(msz[m]===z?' on':'');b.textContent=z;b.setAttribute('aria-pressed',msz[m]===z?'true':'false');
         b.addEventListener('click',function(){msz[m]=z;render();});g.appendChild(b);});
-      var cb=o.querySelector('.chart-btn'); cb.addEventListener('click',function(){openChart(mm.chart,cb);});
+      var cb=o.querySelector('.chart-btn'); cb.addEventListener('click',function(){openChart(m==='kid'?curFit().chart:mm.chart,cb);});
       box.appendChild(o);
     });
     box.hidden=false;
   }
   function renderSet(){
     var st=curSet(), nm=curName(), hasAdult=st.members.some(function(m){return m!=='kid';});
-    $('pImg').src=cur.image(colour.c,st.k,hasAdult?nm.k:'en');
+    var av=availColours();
+    if(av.indexOf(colour.c)<0){ colour=cur.colours.filter(function(x){return x.c===av[0];})[0]; if(av.indexOf(cur.startColour)>=0) colour=cur.colours.filter(function(x){return x.c===cur.startColour;})[0]; colourPicked=false; }
+    Array.prototype.forEach.call($('pSwatches').children,function(b){b.hidden=av.indexOf(b.dataset.c)<0;});
+    $('pFitK').parentNode.hidden=!hasKid(); $('pFitKName').textContent=curFit().label+' \u00B7 '+curFit().note;
+    [['pFitK',fitK]].forEach(function(x){Array.prototype.forEach.call($(x[0]).children,function(b){var on=b.dataset.k===x[1];b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);});});
+    $('pImg').src=cur.image(colour.c,st.k,hasAdult?nm.k:'en',hasKid()?fitK:'boy');
     $('pImg').alt=cur.name+', '+st.label+', '+colour.name;
     $('pColour').textContent=colourPicked?colour.name:'pick one';
     $('pSetName').textContent=st.label;
@@ -934,7 +956,7 @@ var REVIEWS = [
     if(keep){Array.prototype.forEach.call($('pMemberSizes').querySelectorAll('.sz'),function(b){if(b.textContent===keep&&b.classList.contains('on'))b.focus();});}
     var ready=!missing().length;
     if(ready){$('pNeed').hidden=true;
-      var parts=st.members.map(function(m){return memberLabel(m)+' ('+cur.members[m].label+') size '+msz[m];});
+      var parts=st.members.map(function(m){return memberLabel(m)+' ('+(m==='kid'?curFit().label.toLowerCase()+' fit':cur.members[m].label)+') size '+msz[m];});
       $('pWa').href='https://wa.me/918892181354?text='+encodeURIComponent("Hi Ellie & Pip! I'd like to order the "+cur.name+": "+st.label+" ("+rupee(st.price)+") in "+colour.name+". "+parts.join(', ')+". My location: ");
       $('pDm').href='https://ig.me/m/ellie_n_pip';
     } else { $('pWa').removeAttribute('href'); $('pDm').removeAttribute('href'); }
@@ -952,7 +974,7 @@ var REVIEWS = [
     $('pPrice').textContent=rupee(p.price); $('pFit').textContent=p.fit;
     size=null; colourPicked=false; $('pNeed').hidden=true; var sz=$('pSizes'); sz.innerHTML='';
     msz={}; $('pSizeOpt').hidden=!!p.sets; $('pSetOpts').hidden=true; $('pMemberSizes').hidden=true; $('pSetOpts').innerHTML=''; $('pMemberSizes').innerHTML='';
-    if(p.sets){ setK=p.sets[0].k; nameK=p.names[0].k; buildSetOpts(); }
+    if(p.sets){ setK=p.sets[0].k; nameK=p.names[0].k; fitK=p.kidFits[0].k; buildSetOpts(); }
     p.sizes.forEach(function(z){var b=document.createElement('button');b.type='button';b.className='sz';b.dataset.s=z;b.textContent=z;b.setAttribute('aria-pressed','false');b.addEventListener('click',function(){size=z;render();});sz.appendChild(b);});
     $('pSpecs').innerHTML=p.specs.map(function(r){return '<div class="spec"><b>'+r[0]+'</b><span>'+r[1]+'</span></div>';}).join('');
     $('chartOpen').hidden=!p.chart||!!p.sets;
