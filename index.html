@@ -28,7 +28,7 @@
 {"@type":"ListItem","position":10,"item":{"@type":"Product","name":"I'll Start Tomorrow Oversized T-Shirt","description":"Funny procrastination oversized t-shirt with a tired blob, a crossed-off to-do list and the line: I'll start tomorrow. Day 847.","image":"img/cover-tomorrow.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"Offer","price":"629","priceCurrency":"INR","availability":"https://schema.org/InStock"}}},
 {"@type":"ListItem","position":4,"item":{"@type":"Product","name":"Ellie & Pip Elephant Girls T-Shirt","description":"Cute watercolour elephant and bird t-shirt for girls, sizes 0-12 months to 13 years.","image":"img/cover-kids-girls.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"Offer","price":"449","priceCurrency":"INR","availability":"https://schema.org/InStock"}}},
 {"@type":"ListItem","position":5,"item":{"@type":"Product","name":"Ellie & Pip Elephant Boys T-Shirt","description":"Cute watercolour elephant and bird t-shirt for boys, sizes 0-12 months to 13 years.","image":"img/cover-kids-boys.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"Offer","price":"449","priceCurrency":"INR","availability":"https://schema.org/InStock"}}},
-{"@type":"ListItem","position":11,"item":{"@type":"Product","name":"Dino Family Matching T-Shirts","description":"Matching Mamasaurus, Dadasaurus and Babysaurus family tees, also as Ammasaurus and Appasaurus. Family of 3, mom and kid, or dad and kid sets.","image":"img/dino-4-family-en.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"AggregateOffer","lowPrice":"449","highPrice":"1399","priceCurrency":"INR","availability":"https://schema.org/InStock"}}}
+{"@type":"ListItem","position":11,"item":{"@type":"Product","name":"Dino Family Matching T-Shirts","description":"Matching Mamasaurus, Dadasaurus and Babysaurus family tees, also as Ammasaurus and Appasaurus. Family of 3 or 4, mom and kid, or dad and kid sets.","image":"img/dino-4-family-en.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"AggregateOffer","lowPrice":"449","highPrice":"1699","priceCurrency":"INR","availability":"https://schema.org/InStock"}}}
 ]}</script>
 <title>Ellie &amp; Pip | Filter Coffee, Chaya &amp; Biryani T-Shirts, Kids Tees | Bengaluru</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -714,6 +714,7 @@ var PRODUCTS = [
     cover: "img/dino-4-family-en.webp",
     sets: [
       {k:"family", label:"Family of 3", price:1399, was:1647, members:["mom","dad","kid"]},
+      {k:"family4", label:"Family of 4", price:1699, was:2096, members:["mom","dad","kid","kid2"]},
       {k:"momkid", label:"Mom + kid", price:949, was:1048, members:["mom","kid"]},
       {k:"dadkid", label:"Dad + kid", price:949, was:1048, members:["dad","kid"]},
       {k:"mom", label:"Mom tee", price:599, members:["mom"]},
@@ -727,7 +728,8 @@ var PRODUCTS = [
     members: {
       mom: {label:"Mom", sizes:["XS","S","M","L","XL","XXL"], chart:"oversized"},
       dad: {label:"Dad", sizes:["XS","S","M","L","XL","XXL"], chart:"oversized"},
-      kid: {label:"Kid", sizes:["0-12M","12-23M","24-35M","36-47M","5Y","7Y","9Y","11Y","13Y"], chart:"kidsBoys"}
+      kid: {label:"Kid", sizes:["0-12M","12-23M","24-35M","36-47M","5Y","7Y","9Y","11Y","13Y"], chart:"kidsBoys"},
+      kid2: {label:"Kid 2", sizes:["0-12M","12-23M","24-35M","36-47M","5Y","7Y","9Y","11Y","13Y"], chart:"kidsBoys"}
     },
     kidFits: [
       {k:"boy", label:"Boy", chart:"kidsBoys", note:"Boys cut: straight and roomy."},
@@ -820,7 +822,7 @@ var REVIEWS = [
   var grid=document.getElementById('productGrid');
   var pm=document.getElementById('productModal'), cm=document.getElementById('chartModal');
   var cur=null, colour=null, size=null, side='back', lastFocus=null, colourPicked=false;
-  var setK=null, nameK='en', fitK='boy', mixK='same', msz={}, mcol={}, chartBtn=null, compKey='';
+  var setK=null, nameK='en', kfit={kid:'boy',kid2:'boy'}, mixK='same', msz={}, mcol={}, chartBtn=null, compKey='';
   function $(id){return document.getElementById(id);}
   function rupee(n){return "\u20B9"+n;}
 
@@ -900,37 +902,39 @@ var REVIEWS = [
   }
   function curSet(){return cur.sets.filter(function(x){return x.k===setK;})[0];}
   function curName(){return cur.names.filter(function(x){return x.k===nameK;})[0];}
-  function curFit(){return cur.kidFits.filter(function(x){return x.k===fitK;})[0];}
-  function hasKid(){return curSet().members.indexOf('kid')>=0;}
+  function isKid(m){return m==='kid'||m==='kid2';}
+  function curFit(m){var k=kfit[m||'kid']; return cur.kidFits.filter(function(x){return x.k===k;})[0];}
+  function hasKid(){return curSet().members.some(isKid);}
   function availColours(){
-    var st=curSet(), f=curFit();
-    if(!hasKid()||!f.colours) return cur.colours.filter(function(x){return !x.girlOnly;}).map(function(x){return x.c;});
-    return st.members.length===1 ? f.soloColours : f.colours;
+    var st=curSet(), av=cur.colours.filter(function(x){return !x.girlOnly;}).map(function(x){return x.c;});
+    if(st.members.length===1&&isKid(st.members[0])) return curFit('kid').soloColours||av;
+    st.members.filter(isKid).forEach(function(m){var f=curFit(m); if(f.colours) av=av.filter(function(c){return f.colours.indexOf(c)>=0;});});
+    return av;
   }
   function isMix(){return mixK==='mix'&&curSet().members.length>1;}
   function availFor(m){
     var adult=cur.colours.filter(function(x){return !x.girlOnly;}).map(function(x){return x.c;});
-    if(m!=='kid') return adult;
-    var f=curFit(); return f.soloColours||adult;
+    if(!isKid(m)) return adult;
+    var f=curFit(m); return f.soloColours||adult;
   }
   function colObj(c){return cur.colours.filter(function(x){return x.c===c;})[0];}
-  function memberImg(m,c){var nm=curName().k; return m==='kid'?cur.image(c,'kid','en',fitK):cur.image(c,m,nm);}
+  function memberImg(m,c){var nm=curName().k; return isKid(m)?cur.image(c,'kid','en',kfit[m]):cur.image(c,m,nm);}
   function composite(){
-    var ms=curSet().members, key=ms.map(function(m){return m+':'+(mcol[m]||defCol(m));}).join('|')+'|'+nameK+'|'+fitK;
+    var ms=curSet().members, key=ms.map(function(m){return m+':'+(isMix()?(mcol[m]||defCol(m)):colour.c)+':'+(kfit[m]||'');}).join('|')+'|'+nameK;
     if(key===compKey) return; compKey=key;
-    var srcs=ms.map(function(m){return memberImg(m,mcol[m]||defCol(m));}), imgs=[], left=srcs.length;
+    var srcs=ms.map(function(m){return memberImg(m,isMix()?(mcol[m]||defCol(m)):colour.c);}), imgs=[], left=srcs.length;
     srcs.forEach(function(u,i){var im=new Image(); im.onload=im.onerror=function(){ if(--left===0) draw(); }; im.src=u; imgs[i]=im;});
     function draw(){
       if(key!==compKey) return;
       var cv=document.createElement('canvas'); cv.width=1024; cv.height=1280; var x=cv.getContext('2d');
       x.fillStyle='#F2F2F2'; x.fillRect(0,0,1024,1280);
-      var slots=ms.length===3?[[0,40,512,640],[512,40,512,640],[256,620,512,640]]:[[0,0,640,800],[384,480,640,800]];
+      var slots=ms.length===4?[[0,10,512,640],[512,10,512,640],[40,660,460,575],[524,660,460,575]]:ms.length===3?[[0,40,512,640],[512,40,512,640],[256,620,512,640]]:[[0,0,640,800],[384,480,640,800]];
       imgs.forEach(function(im,i){ if(im.naturalWidth){ var sl=slots[i]; x.drawImage(im,sl[0],sl[1],sl[2],sl[3]); }});
       try{ $('pImg').src=cv.toDataURL('image/webp',0.85); }catch(e){}
     }
   }
   function defCol(m){var a=availFor(m); return a.indexOf(colour.c)>=0?colour.c:(a.indexOf(cur.startColour)>=0?cur.startColour:a[0]);}
-  function memberLabel(m){var n=curName(); return m==='kid'?'Babysaurus':n[m];}
+  function memberLabel(m){var n=curName(), two=curSet().members.indexOf('kid2')>=0; return m==='kid'?(two?'Babysaurus 1':'Babysaurus'):m==='kid2'?'Babysaurus 2':n[m];}
   function missing(){
     var miss=[]; if(cur.sets&&isMix()){ curSet().members.forEach(function(m){ if(!mcol[m]) miss.push(cur.members[m].label.toLowerCase()+' colour'); }); } else if(!colourPicked)miss.push('colour');
     if(cur.sets){ curSet().members.forEach(function(m){ if(!msz[m]) miss.push(cur.members[m].label.toLowerCase()+' size'); }); }
@@ -947,7 +951,6 @@ var REVIEWS = [
     }
     group('Set','pSet',cur.sets.map(function(x){return {k:x.k,label:x.label,btn:x.label+' · '+rupee(x.price)};}),function(k){setK=k;render();});
     group('Names','pNames',cur.names,function(k){nameK=k;render();});
-    group('Kid fit','pFitK',cur.kidFits,function(k){fitK=k;render();});
     group('Colours','pMix',[{k:'same',label:'Matching colours'},{k:'mix',label:'Mix & match'}],function(k){mixK=k;compKey='';render();});
     box.hidden=false;
   }
@@ -955,12 +958,19 @@ var REVIEWS = [
     var box=$('pMemberSizes'); box.innerHTML='';
     curSet().members.forEach(function(m){
       var mm=cur.members[m], o=document.createElement('div'); o.className='opt';
-      var who=m==='kid'?'kid \u00B7 '+curFit().label.toLowerCase():mm.label.toLowerCase();
+      var who=isKid(m)?'kid \u00B7 '+curFit(m).label.toLowerCase():mm.label.toLowerCase();
+      if(isKid(m)){
+        var fo=document.createElement('div'); fo.className='opt';
+        fo.innerHTML='<span class="opt-label">'+memberLabel(m)+' fit: <b>'+curFit(m).label+'</b> <span style="font-weight:400">\u00B7 '+curFit(m).note+'</span></span><div class="sizes" role="group" aria-label="'+memberLabel(m)+' fit"></div>';
+        cur.kidFits.forEach(function(f){var b=document.createElement('button');b.type='button';b.className='sz'+(kfit[m]===f.k?' on':'');b.textContent=f.label;b.setAttribute('aria-pressed',kfit[m]===f.k?'true':'false');
+          b.addEventListener('click',function(){kfit[m]=f.k;render();});fo.querySelector('.sizes').appendChild(b);});
+        box.appendChild(fo);
+      }
       o.innerHTML='<span class="opt-label">'+memberLabel(m)+' size ('+who+'): <b>'+(msz[m]||'pick one')+'</b></span><div class="sizes" role="group"></div><button type="button" class="chart-btn" aria-haspopup="dialog">Size chart</button>';
       var g=o.querySelector('.sizes'); g.setAttribute('aria-label',mm.label+' size');
       mm.sizes.forEach(function(z){var b=document.createElement('button');b.type='button';b.className='sz'+(msz[m]===z?' on':'');b.textContent=z;b.setAttribute('aria-pressed',msz[m]===z?'true':'false');
         b.addEventListener('click',function(){msz[m]=z;render();});g.appendChild(b);});
-      var cb=o.querySelector('.chart-btn'); cb.addEventListener('click',function(){openChart(m==='kid'?curFit().chart:mm.chart,cb);});
+      var cb=o.querySelector('.chart-btn'); cb.addEventListener('click',function(){openChart(isKid(m)?curFit(m).chart:mm.chart,cb);});
       if(isMix()){
         var cw=document.createElement('div'); cw.className='opt';
         cw.innerHTML='<span class="opt-label">'+memberLabel(m)+' colour: <b>'+(mcol[m]?colLabel(colObj(mcol[m])):'pick one')+'</b></span><div class="swatches" role="group"></div>';
@@ -974,17 +984,15 @@ var REVIEWS = [
     box.hidden=false;
   }
   function renderSet(){
-    var st=curSet(), nm=curName(), hasAdult=st.members.some(function(m){return m!=='kid';});
+    var st=curSet(), nm=curName(), hasAdult=st.members.some(function(m){return !isKid(m);});
     var av=availColours();
     if(av.indexOf(colour.c)<0){ colour=cur.colours.filter(function(x){return x.c===av[0];})[0]; if(av.indexOf(cur.startColour)>=0) colour=cur.colours.filter(function(x){return x.c===cur.startColour;})[0]; colourPicked=false; }
     Array.prototype.forEach.call($('pSwatches').children,function(b){b.hidden=av.indexOf(b.dataset.c)<0;});
-    $('pFitK').parentNode.hidden=!hasKid(); $('pFitKName').textContent=curFit().label+' \u00B7 '+curFit().note;
-    [['pFitK',fitK]].forEach(function(x){Array.prototype.forEach.call($(x[0]).children,function(b){var on=b.dataset.k===x[1];b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);});});
     var mix=isMix(); $('pMix').parentNode.hidden=st.members.length<2; $('pMixName').textContent=mix?'Mix & match':'Matching colours';
     Array.prototype.forEach.call($('pMix').children,function(b){var on=b.dataset.k===mixK;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);});
     $('pSwatches').parentNode.hidden=mix;
     Object.keys(mcol).forEach(function(m){ if(availFor(m).indexOf(mcol[m])<0) delete mcol[m]; });
-    if(mix) composite(); else { compKey=''; $('pImg').src=cur.image(colour.c,st.k,hasAdult?nm.k:'en',hasKid()?fitK:'boy'); }
+    if(mix||st.members.length===4) composite(); else { compKey=''; $('pImg').src=cur.image(colour.c,st.k,hasAdult?nm.k:'en',hasKid()?kfit.kid:'boy'); }
     $('pImg').alt=cur.name+', '+st.label+', '+colour.name;
     $('pColour').textContent=colourPicked?colLabel(colour):'pick one';
     $('pSetName').textContent=st.label;
@@ -996,7 +1004,7 @@ var REVIEWS = [
     if(keep){Array.prototype.forEach.call($('pMemberSizes').querySelectorAll('.sz'),function(b){if(b.textContent===keep&&b.classList.contains('on'))b.focus();});}
     var ready=!missing().length;
     if(ready){$('pNeed').hidden=true;
-      var parts=st.members.map(function(m){return memberLabel(m)+' ('+(m==='kid'?curFit().label.toLowerCase()+' fit':cur.members[m].label)+') size '+msz[m]+(mix?' in '+colObj(mcol[m]).name:'');});
+      var parts=st.members.map(function(m){return memberLabel(m)+' ('+(isKid(m)?curFit(m).label.toLowerCase()+' fit':cur.members[m].label)+') size '+msz[m]+(mix?' in '+colObj(mcol[m]).name:'');});
       $('pWa').href='https://wa.me/918892181354?text='+encodeURIComponent("Hi Ellie & Pip! I'd like to order the "+cur.name+": "+st.label+" ("+rupee(st.price)+")"+(mix?'':' in '+colour.name)+". "+parts.join(', ')+". My location: ");
       $('pDm').href='https://ig.me/m/ellie_n_pip';
     } else { $('pWa').removeAttribute('href'); $('pDm').removeAttribute('href'); }
@@ -1015,7 +1023,7 @@ var REVIEWS = [
     $('pPrice').textContent=rupee(p.price); $('pFit').textContent=p.fit;
     size=null; colourPicked=false; $('pNeed').hidden=true; var sz=$('pSizes'); sz.innerHTML='';
     msz={}; $('pSizeOpt').hidden=!!p.sets; $('pSetOpts').hidden=true; $('pMemberSizes').hidden=true; $('pSetOpts').innerHTML=''; $('pMemberSizes').innerHTML='';
-    if(p.sets){ setK=p.sets[0].k; nameK=p.names[0].k; fitK=p.kidFits[0].k; mixK='same'; mcol={}; compKey=''; buildSetOpts(); }
+    if(p.sets){ setK=p.sets[0].k; nameK=p.names[0].k; kfit={kid:p.kidFits[0].k,kid2:p.kidFits[0].k}; mixK='same'; mcol={}; compKey=''; buildSetOpts(); }
     p.sizes.forEach(function(z){var b=document.createElement('button');b.type='button';b.className='sz';b.dataset.s=z;b.textContent=z;b.setAttribute('aria-pressed','false');b.addEventListener('click',function(){size=z;render();});sz.appendChild(b);});
     $('pSpecs').innerHTML=p.specs.map(function(r){return '<div class="spec"><b>'+r[0]+'</b><span>'+r[1]+'</span></div>';}).join('');
     $('chartOpen').hidden=!p.chart||!!p.sets;
