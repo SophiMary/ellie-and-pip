@@ -706,7 +706,7 @@ var PRODUCTS = [
     price: 1399,
     cardPrice: "from \u20B9449",
     fit: "matching set",
-    desc: "A dino for everyone in the house. Mamasaurus, Dadasaurus and a little Babysaurus, hand-drawn and printed to match. Prefer Amma and Appa? Switch the names to Ammasaurus and Appasaurus.",
+    desc: "A dino for everyone in the house. Mamasaurus, Dadasaurus and a little Babysaurus, hand-drawn and printed to match. Two little ones? The Family of 4 comes with Babysaurus (1) and Babysaurus (2). Prefer Amma and Appa? Switch the names to Ammasaurus and Appasaurus.",
     specs: [["Adult tee","Unisex oversized, 100% cotton, 180 GSM, with extra length and a dropped sleeve."],["Kids tee","Soft cotton crew neck in a boys or girls cut, sizes 0-12 months to 13 years. The girls cut comes in fewer colours."],["Print","Front print in durable DTF, made fresh for your order."],["Care","Wash inside out in cold water. Do not iron directly on the print. Do not tumble dry."]],
     sizes: ["0-12M","XXL"],
     sides: ["front"],
@@ -918,7 +918,7 @@ var REVIEWS = [
     var f=curFit(m); return f.soloColours||adult;
   }
   function colObj(c){return cur.colours.filter(function(x){return x.c===c;})[0];}
-  function memberImg(m,c){var nm=curName().k; return isKid(m)?cur.image(c,'kid','en',kfit[m]):cur.image(c,m,nm);}
+  function memberImg(m,c){var nm=curName().k; if(isKid(m)){var u=cur.image(c,'kid','en',kfit[m]); return curSet().members.indexOf('kid2')>=0?u.replace('.webp','-n'+(m==='kid'?1:2)+'.webp'):u;} return cur.image(c,m,nm);}
   function composite(){
     var ms=curSet().members, key=ms.map(function(m){return m+':'+(isMix()?(mcol[m]||defCol(m)):colour.c)+':'+(kfit[m]||'');}).join('|')+'|'+nameK;
     if(key===compKey) return; compKey=key;
@@ -934,7 +934,7 @@ var REVIEWS = [
     }
   }
   function defCol(m){var a=availFor(m); return a.indexOf(colour.c)>=0?colour.c:(a.indexOf(cur.startColour)>=0?cur.startColour:a[0]);}
-  function memberLabel(m){var n=curName(), two=curSet().members.indexOf('kid2')>=0; return m==='kid'?(two?'Babysaurus 1':'Babysaurus'):m==='kid2'?'Babysaurus 2':n[m];}
+  function memberLabel(m){var n=curName(), two=curSet().members.indexOf('kid2')>=0; return m==='kid'?(two?'Babysaurus (1)':'Babysaurus'):m==='kid2'?'Babysaurus (2)':n[m];}
   function missing(){
     var miss=[]; if(cur.sets&&isMix()){ curSet().members.forEach(function(m){ if(!mcol[m]) miss.push(cur.members[m].label.toLowerCase()+' colour'); }); } else if(!colourPicked)miss.push('colour');
     if(cur.sets){ curSet().members.forEach(function(m){ if(!msz[m]) miss.push(cur.members[m].label.toLowerCase()+' size'); }); }
