@@ -882,7 +882,7 @@ var REVIEWS = [
     if(cur.sets){ renderSet(); return; }
     $('pImg').src=cur.image(colour.c,side);
     $('pImg').alt=cur.name+', '+colour.name+', '+side;
-    $('pColour').textContent=colourPicked?colour.name:'pick one';
+    $('pColour').textContent=colourPicked?colLabel(colour):'pick one';
     if(colourPicked&&size)$('pNeed').hidden=true;
     $('pSizeName').textContent=size||'pick one';
     var ready=colourPicked&&!!size;
@@ -963,9 +963,9 @@ var REVIEWS = [
       var cb=o.querySelector('.chart-btn'); cb.addEventListener('click',function(){openChart(m==='kid'?curFit().chart:mm.chart,cb);});
       if(isMix()){
         var cw=document.createElement('div'); cw.className='opt';
-        cw.innerHTML='<span class="opt-label">'+memberLabel(m)+' colour: <b>'+(mcol[m]?colObj(mcol[m]).name:'pick one')+'</b></span><div class="swatches" role="group"></div>';
+        cw.innerHTML='<span class="opt-label">'+memberLabel(m)+' colour: <b>'+(mcol[m]?colLabel(colObj(mcol[m])):'pick one')+'</b></span><div class="swatches" role="group"></div>';
         var sg=cw.querySelector('.swatches'); sg.setAttribute('aria-label',memberLabel(m)+' colour');
-        availFor(m).forEach(function(c){var x=colObj(c),b=document.createElement('button');b.type='button';b.className='sw'+(mcol[m]===c?' on':'');b.style.setProperty('--sw',x.hex);b.setAttribute('aria-label',x.name);b.setAttribute('aria-pressed',mcol[m]===c?'true':'false');
+        availFor(m).forEach(function(c){var x=colObj(c),b=document.createElement('button');b.type='button';b.className='sw'+(mcol[m]===c?' on':'');b.style.setProperty('--sw',x.hex);b.setAttribute('aria-label',x.name);b.title=x.name+' '+x.hex.toUpperCase();b.setAttribute('aria-pressed',mcol[m]===c?'true':'false');
           b.addEventListener('click',function(){mcol[m]=c;render();});sg.appendChild(b);});
         box.appendChild(cw);
       }
@@ -986,7 +986,7 @@ var REVIEWS = [
     Object.keys(mcol).forEach(function(m){ if(availFor(m).indexOf(mcol[m])<0) delete mcol[m]; });
     if(mix) composite(); else { compKey=''; $('pImg').src=cur.image(colour.c,st.k,hasAdult?nm.k:'en',hasKid()?fitK:'boy'); }
     $('pImg').alt=cur.name+', '+st.label+', '+colour.name;
-    $('pColour').textContent=colourPicked?colour.name:'pick one';
+    $('pColour').textContent=colourPicked?colLabel(colour):'pick one';
     $('pSetName').textContent=st.label;
     $('pNames').parentNode.hidden=!hasAdult; $('pNamesName').textContent=nm.label;
     $('pPrice').textContent=rupee(st.price); $('pFit').textContent=st.was?'save '+rupee(st.was-st.price):cur.fit;
@@ -1003,6 +1003,7 @@ var REVIEWS = [
     ['pWa','pDm'].forEach(function(id){var a=$(id);a.setAttribute('aria-disabled',ready?'false':'true');a.setAttribute('role','button');a.tabIndex=0;a.classList.toggle('not-ready',!ready);});
     Array.prototype.forEach.call($('pSwatches').children,function(b){var on=colourPicked&&b.dataset.c===colour.c;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);});
   }
+  function colLabel(x){return x.name+' \u00B7 '+x.hex.toUpperCase();}
   function viewIndex(){for(var i=0;i<cur.views.length;i++){if(cur.views[i][0]===side)return i;}return 0;}
   function stepView(d){var n=cur.views.length;side=cur.views[(viewIndex()+d+n)%n][0];render();}
   function openProduct(p,fromHash){
@@ -1033,7 +1034,7 @@ var REVIEWS = [
     var sw=$('pSwatches'); sw.innerHTML='';
     p.colours.forEach(function(x){
       var b=document.createElement('button'); b.type='button'; b.className='sw'; b.dataset.c=x.c;
-      b.style.setProperty('--sw',x.hex); b.setAttribute('aria-label',x.name);
+      b.style.setProperty('--sw',x.hex); b.setAttribute('aria-label',x.name);b.title=x.name+' '+x.hex.toUpperCase();
       b.addEventListener('click',function(){colour=x;colourPicked=true;render();});
       sw.appendChild(b);
       if(!p.sets)(p.views?p.views.map(function(v){return v[0];}):(p.sides||['front','back'])).forEach(function(sd){var i=new Image();i.src=p.image(x.c,sd);});
