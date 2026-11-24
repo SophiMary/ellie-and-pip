@@ -28,7 +28,8 @@
 {"@type":"ListItem","position":10,"item":{"@type":"Product","name":"I'll Start Tomorrow Oversized T-Shirt","description":"Funny procrastination oversized t-shirt with a tired blob, a crossed-off to-do list and the line: I'll start tomorrow. Day 847.","image":"img/cover-tomorrow.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"Offer","price":"629","priceCurrency":"INR","availability":"https://schema.org/InStock"}}},
 {"@type":"ListItem","position":4,"item":{"@type":"Product","name":"Ellie & Pip Elephant Girls T-Shirt","description":"Cute watercolour elephant and bird t-shirt for girls, sizes 0-12 months to 13 years.","image":"img/cover-kids-girls.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"Offer","price":"449","priceCurrency":"INR","availability":"https://schema.org/InStock"}}},
 {"@type":"ListItem","position":5,"item":{"@type":"Product","name":"Ellie & Pip Elephant Boys T-Shirt","description":"Cute watercolour elephant and bird t-shirt for boys, sizes 0-12 months to 13 years.","image":"img/cover-kids-boys.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"Offer","price":"449","priceCurrency":"INR","availability":"https://schema.org/InStock"}}},
-{"@type":"ListItem","position":11,"item":{"@type":"Product","name":"Dino Family Matching T-Shirts","description":"Matching Mamasaurus, Dadasaurus and Babysaurus family tees, also as Ammasaurus and Appasaurus. Family of 3 or 4, mom and kid, or dad and kid sets.","image":"img/dino-4-family-en.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"AggregateOffer","lowPrice":"449","highPrice":"1699","priceCurrency":"INR","availability":"https://schema.org/InStock"}}}
+{"@type":"ListItem","position":11,"item":{"@type":"Product","name":"Dino Family Matching T-Shirts","description":"Matching Mamasaurus, Dadasaurus and Babysaurus family tees, also as Ammasaurus and Appasaurus. Family of 3 or 4, mom and kid, or dad and kid sets.","image":"img/dino-4-family-en.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"AggregateOffer","lowPrice":"449","highPrice":"1699","priceCurrency":"INR","availability":"https://schema.org/InStock"}}},
+{"@type":"ListItem","position":12,"item":{"@type":"Product","name":"Pawsitive Energy Cats Oversized T-Shirt","description":"Cute cat oversized t-shirt with five kawaii cats and the line: Pawsitive Energy!","image":"img/cover-cats.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"Offer","price":"629","priceCurrency":"INR","availability":"https://schema.org/InStock"}}}
 ]}</script>
 <title>Ellie &amp; Pip | Filter Coffee, Chaya &amp; Biryani T-Shirts, Kids Tees | Bengaluru</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -697,6 +698,31 @@ var PRODUCTS = [
       {c:"3", name:"Navy", hex:"#2D314A"}
     ],
     image: function(c, view){ return "img/tomorrow-" + c + "-" + view + ".webp"; }
+  },
+  {
+    id: "pawsitive-energy",
+    name: "Pawsitive Energy Oversized T-Shirt",
+    nameHtml: "Pawsitive <em>Energy</em> Tee",
+    type: "Unisex T-shirt",
+    price: 629,
+    fit: "unisex · oversized",
+    desc: "Five little cats lined up on the ledge: one waving hi, one winking, one sending love, and the tiny one napping on top. \"Pawsitive Energy!\" across the chest, for every cat person who needs the reminder.",
+    specs: [["Fabric","100% cotton, 180 GSM. Structured drape without the bulk."],["Fit","Unisex oversized, with extra length and a dropped sleeve."],["Print","Front chest print, made fresh for your order."],["Care","Wash inside out in cold water. Do not iron directly on the print. Do not tumble dry."]],
+    sizes: ["XS","S","M","L","XL","XXL"],
+    chart: "oversized",
+    views: [["closeup","Front print"],["front","Full front"],["back","Back"]],
+    startColour: "45",
+    cover: "img/cover-cats.webp",
+    colours: [
+      {c:"1", name:"White", hex:"#FFFFFF"},
+      {c:"4", name:"Grey", hex:"#C3C3C3"},
+      {c:"45", name:"Pink", hex:"#FFD5DB"},
+      {c:"49", name:"Lavender", hex:"#BBB1D2"},
+      {c:"51", name:"Beige", hex:"#EBCD8B"},
+      {c:"2", name:"Black", hex:"#151515"},
+      {c:"3", name:"Navy", hex:"#2D314A"}
+    ],
+    image: function(c, view){ return "img/cats-" + c + "-" + view + ".webp"; }
   },
   {
     id: "dino-family",
