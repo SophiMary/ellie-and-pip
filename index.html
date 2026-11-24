@@ -382,6 +382,30 @@ section{scroll-margin-top:64px}
 .pcard[hidden]{display:none}
 @media (max-width:560px){.grid{grid-template-columns:1fr 1fr;gap:12px}.pbody{padding:12px 12px 14px}.pbody h3{font-size:18px}.prow{flex-direction:column;align-items:flex-start;gap:4px}.prow strong{font-size:19px}.dots{display:none}.pbadge{top:8px;left:8px;font-size:10.5px;padding:4px 9px}}
 
+/* ===== Pip in the header ===== */
+.bar{position:relative}
+.pip{position:absolute;top:50%;width:44px;height:auto;margin-top:-30px;cursor:pointer;z-index:2;border:0;background:none;padding:0;-webkit-tap-highlight-color:transparent}
+.pip img{width:100%;height:auto;display:block;pointer-events:none}
+.pip-heart{position:absolute;width:18px;height:auto;pointer-events:none;opacity:0;z-index:2}
+@keyframes heartUp{0%{opacity:0;transform:translateY(0) scale(.4)}20%{opacity:1;transform:translateY(-6px) scale(1.1)}100%{opacity:0;transform:translateY(-40px) scale(.9) rotate(-12deg)}}
+@keyframes pipHop{0%,100%{transform:translateY(0)}35%{transform:translateY(-12px) rotate(-8deg)}60%{transform:translateY(0) rotate(4deg)}}
+@keyframes pipIdle{0%,92%,100%{transform:rotate(0)}95%{transform:rotate(-10deg)}97%{transform:rotate(6deg)}}
+.pip.sit img{animation:pipIdle 6s ease-in-out infinite;transform-origin:50% 90%}
+.pip.hop img{animation:pipHop .5s ease}
+
+/* ===== Ellie peeks above the footer ===== */
+.peek{position:relative;height:150px;overflow:hidden;pointer-events:none}
+.peek .ellie{position:absolute;bottom:-4px;right:6%;width:200px;transform:translateY(105%);transition:transform 1s cubic-bezier(.2,.9,.3,1.15)}
+.peek.in .ellie{transform:translateY(22%)}
+.peek .ellie img{width:100%;height:auto;transform-origin:30% 100%}
+.peek.in .ellie img{animation:ellieWave 2.8s ease-in-out 1s infinite}
+@keyframes ellieWave{0%,100%{transform:rotate(0)}30%{transform:rotate(-3deg)}60%{transform:rotate(2deg)}}
+.peek .bubble{position:absolute;right:calc(6% + 170px);bottom:70px;background:#fff8f0;border:1.5px solid var(--blush);border-radius:18px 18px 4px 18px;padding:10px 14px;font-size:14.5px;line-height:1.3;max-width:210px;box-shadow:0 8px 20px rgba(78,51,40,.10);opacity:0;transform:translateY(8px) scale(.9);transform-origin:100% 100%;transition:opacity .4s 1.1s,transform .4s 1.1s;pointer-events:auto;text-decoration:none;color:var(--ink)}
+.peek .bubble b{color:var(--rose)}
+.peek.in .bubble{opacity:1;transform:none}
+@media (max-width:560px){.peek .ellie{width:150px;right:2%}.peek .bubble{right:calc(2% + 128px);bottom:56px;font-size:13.5px;max-width:180px}}
+@media (prefers-reduced-motion: reduce){.peek .ellie{transition:none}.peek.in .ellie img,.pip.sit img{animation:none}}
+
 /* idea form collapsed */
 .idea-open{margin-top:18px}
 .idea.collapsed{grid-template-columns:1fr}
@@ -507,6 +531,10 @@ section{scroll-margin-top:64px}
     </div>
   </section>
 </main>
+<div class="peek" id="peek" aria-hidden="false">
+  <a class="bubble" href="https://wa.me/918892181354?text=Hi%20Ellie%20%26%20Pip!%20I%27d%20like%20to%20order">Psst… found one you like? <b>Tell us your size on WhatsApp</b> 💬</a>
+  <div class="ellie"><img src="img/ellie-peek.webp" alt="Ellie the elephant peeking up" width="600" height="325" loading="lazy"></div>
+</div>
 
 <footer>
   <div class="wrap foot">
@@ -1275,6 +1303,39 @@ var REVIEWS = [
     go(0); restart();
     var an=document.querySelectorAll('#announce span'), j=0;
     if(an.length>1 && !still && !matchMedia('(min-width:1000px)').matches) setInterval(function(){an[j].classList.remove('on');j=(j+1)%an.length;an[j].classList.add('on');},4000);
+  })();
+
+  (function(){ /* Pip flies in and perches next to the brand name */
+    var bar=document.querySelector('header .bar'), brand=document.querySelector('.brand'); if(!bar||!brand) return;
+    var still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var pip=document.createElement('button'); pip.type='button'; pip.className='pip'; pip.setAttribute('aria-label','Pip the bird says hi');
+    pip.innerHTML='<img src="img/pip.webp" alt="" width="180" height="126">'; bar.appendChild(pip);
+    function perch(){ var br=brand.getBoundingClientRect(), b=bar.getBoundingClientRect(); return br.right-b.left+2; }
+    function place(){ pip.style.left=perch()+'px'; }
+    function heart(){ var h=document.createElement('img'); h.src='img/heart.webp'; h.alt=''; h.className='pip-heart';
+      h.style.left=(perch()+30)+'px'; h.style.top='2px'; bar.appendChild(h);
+      if(h.animate) h.animate([{opacity:0,transform:'translateY(0) scale(.4)'},{opacity:1,transform:'translateY(-6px) scale(1.1)',offset:.2},{opacity:0,transform:'translateY(-40px) scale(.9) rotate(-12deg)'}],{duration:1400,easing:'ease-out'});
+      setTimeout(function(){h.remove();},1500); }
+    place(); window.addEventListener('resize',place);
+    pip.addEventListener('click',function(){ pip.classList.remove('hop'); void pip.offsetWidth; pip.classList.add('hop'); heart(); });
+    if(still||!pip.animate){ pip.classList.add('sit'); return; }
+    var dx=window.innerWidth-perch()+40;
+    var f=pip.animate([
+      {transform:'translate('+dx+'px,40px) rotate(8deg)'},
+      {transform:'translate('+dx*.75+'px,-6px) rotate(-6deg)',offset:.2},
+      {transform:'translate('+dx*.55+'px,18px) rotate(6deg)',offset:.4},
+      {transform:'translate('+dx*.32+'px,-10px) rotate(-6deg)',offset:.62},
+      {transform:'translate('+dx*.12+'px,8px) rotate(5deg)',offset:.82},
+      {transform:'translate(0,-8px) rotate(-4deg)',offset:.93},
+      {transform:'translate(0,0) rotate(0)'}
+    ],{duration:2200,delay:600,easing:'ease-out',fill:'backwards'});
+    f.onfinish=function(){ pip.classList.add('sit'); heart(); };
+  })();
+  (function(){ /* Ellie peeks when the bottom of the page comes into view */
+    var pk=document.getElementById('peek'); if(!pk) return;
+    if(!('IntersectionObserver' in window)){pk.classList.add('in');return;}
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting){pk.classList.add('in');io.disconnect();} });},{threshold:.6});
+    io.observe(pk);
   })();
 
   function fromHash(){
