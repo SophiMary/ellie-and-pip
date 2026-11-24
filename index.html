@@ -28,7 +28,7 @@
 {"@type":"ListItem","position":10,"item":{"@type":"Product","name":"I'll Start Tomorrow Oversized T-Shirt","description":"Funny procrastination oversized t-shirt with a tired blob, a crossed-off to-do list and the line: I'll start tomorrow. Day 847.","image":"img/cover-tomorrow.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"Offer","price":"629","priceCurrency":"INR","availability":"https://schema.org/InStock"}}},
 {"@type":"ListItem","position":4,"item":{"@type":"Product","name":"Ellie & Pip Elephant Girls T-Shirt","description":"Cute watercolour elephant and bird t-shirt for girls, sizes 0-12 months to 13 years.","image":"img/cover-kids-girls.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"Offer","price":"449","priceCurrency":"INR","availability":"https://schema.org/InStock"}}},
 {"@type":"ListItem","position":5,"item":{"@type":"Product","name":"Ellie & Pip Elephant Boys T-Shirt","description":"Cute watercolour elephant and bird t-shirt for boys, sizes 0-12 months to 13 years.","image":"img/cover-kids-boys.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"Offer","price":"449","priceCurrency":"INR","availability":"https://schema.org/InStock"}}},
-{"@type":"ListItem","position":11,"item":{"@type":"Product","name":"Dino Family Matching T-Shirts","description":"Matching Mamasaurus, Dadasaurus and Babysaurus family tees, also as Ammasaurus and Appasaurus. Family of 3 or 4, mom and kid, or dad and kid sets.","image":"img/dino-4-family-en.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"AggregateOffer","lowPrice":"449","highPrice":"1699","priceCurrency":"INR","availability":"https://schema.org/InStock"}}},
+{"@type":"ListItem","position":11,"item":{"@type":"Product","name":"Dino Family Matching T-Shirts","description":"Matching Mamasaurus, Dadasaurus and Babysaurus family tees, also as Ammasaurus and Appasaurus. Family of 3 or 4, mom and kid, or dad and kid sets.","image":"img/cover-dino.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"AggregateOffer","lowPrice":"449","highPrice":"1699","priceCurrency":"INR","availability":"https://schema.org/InStock"}}},
 {"@type":"ListItem","position":12,"item":{"@type":"Product","name":"Pawsitive Energy Cats Oversized T-Shirt","description":"Cute cat oversized t-shirt with five kawaii cats and the line: Pawsitive Energy!","image":"img/cover-cats.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"Offer","price":"629","priceCurrency":"INR","availability":"https://schema.org/InStock"}}},
 {"@type":"ListItem","position":13,"item":{"@type":"Product","name":"Shankar Nag Tribute Oversized T-Shirt","description":"Shankar Nag tribute oversized t-shirt with a vintage-style portrait and his name in English and Kannada.","image":"img/cover-shankar.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"Offer","price":"649","priceCurrency":"INR","availability":"https://schema.org/InStock"}}}
 ]}</script>
@@ -759,7 +759,9 @@ var PRODUCTS = [
     sizes: ["0-12M","XXL"],
     sides: ["front"],
     startColour: "4",
-    cover: "img/dino-4-family-en.webp",
+    startMix: {mom:"45", dad:"3", kid:"28", kid2:"28"},
+    startFit: "girl",
+    cover: "img/cover-dino.webp",
     sets: [
       {k:"family", label:"Family of 3", price:1399, was:1647, members:["mom","dad","kid"]},
       {k:"family4", label:"Family of 4", price:1699, was:2096, members:["mom","dad","kid","kid2"]},
@@ -981,7 +983,7 @@ var REVIEWS = [
       try{ $('pImg').src=cv.toDataURL('image/webp',0.85); }catch(e){}
     }
   }
-  function defCol(m){var a=availFor(m); return a.indexOf(colour.c)>=0?colour.c:(a.indexOf(cur.startColour)>=0?cur.startColour:a[0]);}
+  function defCol(m){var a=availFor(m); if(cur.startMix&&cur.startMix[m]&&a.indexOf(cur.startMix[m])>=0) return cur.startMix[m]; return a.indexOf(colour.c)>=0?colour.c:(a.indexOf(cur.startColour)>=0?cur.startColour:a[0]);}
   function memberLabel(m){var n=curName(), two=curSet().members.indexOf('kid2')>=0; return m==='kid'?(two?'Babysaurus (1)':'Babysaurus'):m==='kid2'?'Babysaurus (2)':n[m];}
   function missing(){
     var miss=[]; if(cur.sets&&isMix()){ curSet().members.forEach(function(m){ if(!mcol[m]) miss.push(cur.members[m].label.toLowerCase()+' colour'); }); } else if(!colourPicked)miss.push('colour');
@@ -1071,7 +1073,7 @@ var REVIEWS = [
     $('pPrice').textContent=rupee(p.price); $('pFit').textContent=p.fit;
     size=null; colourPicked=false; $('pNeed').hidden=true; var sz=$('pSizes'); sz.innerHTML='';
     msz={}; $('pSizeOpt').hidden=!!p.sets; $('pSetOpts').hidden=true; $('pMemberSizes').hidden=true; $('pSetOpts').innerHTML=''; $('pMemberSizes').innerHTML='';
-    if(p.sets){ setK=p.sets[0].k; nameK=p.names[0].k; kfit={kid:p.kidFits[0].k,kid2:p.kidFits[0].k}; mixK='same'; mcol={}; compKey=''; buildSetOpts(); }
+    if(p.sets){ setK=p.sets[0].k; nameK=p.names[0].k; var sf=p.startFit||p.kidFits[0].k; kfit={kid:sf,kid2:sf}; mixK=p.startMix?'mix':'same'; mcol=p.startMix?JSON.parse(JSON.stringify(p.startMix)):{}; compKey=''; buildSetOpts(); }
     p.sizes.forEach(function(z){var b=document.createElement('button');b.type='button';b.className='sz';b.dataset.s=z;b.textContent=z;b.setAttribute('aria-pressed','false');b.addEventListener('click',function(){size=z;render();});sz.appendChild(b);});
     $('pSpecs').innerHTML=p.specs.map(function(r){return '<div class="spec"><b>'+r[0]+'</b><span>'+r[1]+'</span></div>';}).join('');
     $('chartOpen').hidden=!p.chart||!!p.sets;
