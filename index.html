@@ -320,10 +320,67 @@ section{scroll-margin-top:64px}
   #chartModal .modal-card{padding:28px 20px 22px}
   .foot{flex-direction:column;align-items:flex-start}
 }
+
+/* announcement bar */
+.announce{background:var(--ink);color:var(--paper);font-size:14px;letter-spacing:.04em;text-align:center;padding:9px 16px;overflow:hidden;position:relative;height:38px}
+.announce span{position:absolute;inset:0;display:block;line-height:38px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 16px;opacity:0;transform:translateY(8px);transition:opacity .5s,transform .5s}
+.announce span.on{opacity:1;transform:none}
+.announce a{color:#F3D9D5;font-weight:700}
+@media (prefers-reduced-motion: reduce){.announce span{transition:none}}
+
+/* hero photo slider */
+.hero-slider{position:relative;border-radius:28px;overflow:hidden;aspect-ratio:4/5;max-width:470px;width:100%;margin:0 auto;background:var(--paper-deep);box-shadow:0 20px 40px rgba(78,51,40,.14)}
+.hs-track{display:flex;height:100%;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.hs-slide{min-width:100%;height:100%;position:relative}
+.hero-art .hs-slide img{width:100%;max-width:none;height:100%;object-fit:cover;margin:0}
+.hs-slide.pair{display:grid;grid-template-columns:1fr 1fr}
+.hs-cap{position:absolute;left:14px;right:14px;bottom:14px;background:rgba(253,246,236,.94);border-radius:18px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;text-decoration:none;color:var(--ink)}
+.hs-cap b{font-family:var(--display);font-size:19px;display:block;line-height:1.2}
+.hs-cap small{font-size:13px;color:var(--rose);letter-spacing:.06em}
+.hs-cap .go{flex:none;background:var(--ink);color:var(--paper);border-radius:999px;padding:8px 14px;font-size:14px;font-weight:700}
+.hs-dots{position:absolute;top:14px;left:0;right:0;display:flex;justify-content:center;gap:6px}
+.hs-dots button{width:8px;height:8px;border-radius:99px;border:0;background:rgba(255,255,255,.6);padding:0;cursor:pointer;transition:width .3s}
+.hs-dots button.on{width:22px;background:#fff}
+.hs-arrow{position:absolute;top:45%;width:38px;height:38px;border-radius:50%;border:0;background:rgba(253,246,236,.9);color:var(--ink);font-size:22px;cursor:pointer;display:grid;place-items:center}
+.hs-prev{left:10px}.hs-next{right:10px}
+.mini-proof{display:flex;align-items:center;gap:10px;margin-top:22px;font-size:15px;text-decoration:none;max-width:34ch}
+.mini-proof .stars{color:#D9A441;letter-spacing:2px;flex:none}
+.mini-proof q{font-style:italic}
+@media (max-width:760px){.hero-slider{max-width:none}.hero{gap:24px}}
+
+/* shop by vibe */
+.vibes{display:flex;gap:14px;overflow-x:auto;padding:4px 20px 14px;margin:0 -20px 18px;scroll-snap-type:x mandatory;scrollbar-width:none}
+.vibes::-webkit-scrollbar{display:none}
+.vibe{flex:none;scroll-snap-align:start;display:grid;justify-items:center;gap:8px;background:none;border:0;padding:0;cursor:pointer;font:inherit;color:var(--ink);width:92px}
+.vibe .ring{width:84px;height:84px;border-radius:50%;padding:3px;border:2.5px solid var(--blush);transition:border-color .2s,transform .2s}
+.vibe .ring img,.vibe .ring .all{width:100%;height:100%;border-radius:50%;object-fit:cover;background:var(--paper-deep)}
+.vibe .ring .all{display:grid;place-items:center;font-family:var(--hand);font-size:26px;color:var(--rose)}
+.vibe span.lbl{font-size:14px;line-height:1.2;text-align:center}
+.vibe:hover .ring{transform:translateY(-2px)}
+.vibe[aria-pressed="true"] .ring{border-color:var(--rose)}
+.vibe[aria-pressed="true"] span.lbl{font-weight:700;color:var(--rose)}
+.shop-count{font-size:14px;opacity:.75;margin:-6px 0 16px}
+
+/* card badges + fit pills */
+.pcard{position:relative}
+.pbadge{position:absolute;top:12px;left:12px;z-index:1;background:var(--rose);color:#fff;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:5px 11px;border-radius:999px;box-shadow:0 4px 10px rgba(78,51,40,.18)}
+.pbadge.fam{background:var(--sage)}
+.ptype.pill{justify-self:start;background:var(--blush);color:var(--ink);letter-spacing:.08em;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px}
+.pcard[hidden]{display:none}
+@media (max-width:560px){.grid{grid-template-columns:1fr 1fr;gap:12px}.pbody{padding:12px 12px 14px}.pbody h3{font-size:18px}.prow{flex-direction:column;align-items:flex-start;gap:4px}.prow strong{font-size:19px}.dots{display:none}.pbadge{top:8px;left:8px;font-size:10.5px;padding:4px 9px}}
+
+/* idea form collapsed */
+.idea-open{margin-top:18px}
+.idea.collapsed{grid-template-columns:1fr}
 </style>
 </head>
 <body>
 
+<div class="announce" id="announce" role="region" aria-label="Announcements">
+  <span class="on">🦖 New: <a href="#dino-family">Dino Family matching tees</a></span>
+  <span>Printed fresh for you · Ships across India 🇮🇳</span>
+  <span>Order in 1 tap on <a href="https://wa.me/918892181354?text=Hi%20Ellie%20%26%20Pip!">WhatsApp</a> or Instagram DM</span>
+</div>
 <header>
   <div class="wrap bar">
     <a class="brand" href="#top">Ellie <span class="amp">&amp;</span> Pip</a>
@@ -350,8 +407,21 @@ section{scroll-margin-top:64px}
         <a class="btn btn-primary" href="#shop">Shop now</a>
         <a class="btn btn-ghost" href="https://instagram.com/ellie_n_pip">Follow @ellie_n_pip</a>
       </div>
+      <a class="mini-proof" href="#reviews"><span class="stars" aria-hidden="true">★★★★★</span><span><q>Got the t-shirt, fits well 😄</q> — Sudeep</span></a>
     </div>
-    <div class="hero-art"><img src="img/logo.webp" alt="Ellie &amp; Pip logo: a smiling elephant with a little bird perched on her trunk"></div>
+    <div class="hero-art">
+      <div class="hero-slider" id="heroSlider" aria-roledescription="carousel" aria-label="Featured tees">
+        <div class="hs-track">
+          <div class="hs-slide"><img src="img/coffee-photo-back.webp" alt="Man wearing the black Fueled by Filter Coffee tee, back print"><a class="hs-cap" href="#filter-coffee"><span><small>FRONT + BACK PRINT</small><b>Filter Coffee Tee · ₹699</b></span><span class="go">Shop</span></a></div>
+          <div class="hs-slide pair"><img src="img/cover-kids-girls.webp" alt="Girl wearing the pink Ellie &amp; Pip tee"><img src="img/cover-kids-boys.webp" alt="Boy wearing the lavender Ellie &amp; Pip tee" loading="lazy"><a class="hs-cap" href="#ellie-pip-girls"><span><small>FOR YOUR LITTLE ONES</small><b>Ellie &amp; Pip Kids · ₹449</b></span><span class="go">Shop</span></a></div>
+          <div class="hs-slide"><img src="img/cover-tasty.webp" alt="Woman wearing the lavender Tasty Food tee, back print" loading="lazy"><a class="hs-cap" href="#tasty-food"><span><small>FOR THE FOODIES</small><b>Tasty Food Tee · ₹699</b></span><span class="go">Shop</span></a></div>
+          <div class="hs-slide"><img src="img/cover-dino.webp" alt="Mamasaurus, Dadasaurus and Babysaurus matching tees" loading="lazy" style="object-fit:contain;background:#F2F2F2"><a class="hs-cap" href="#dino-family"><span><small>NEW · MATCH THE WHOLE FAMILY</small><b>Dino Family Tees · from ₹449</b></span><span class="go">Shop</span></a></div>
+        </div>
+        <div class="hs-dots"></div>
+        <button type="button" class="hs-arrow hs-prev" aria-label="Previous">&#8249;</button>
+        <button type="button" class="hs-arrow hs-next" aria-label="Next">&#8250;</button>
+      </div>
+    </div>
   </div>
 
   <section id="shop">
@@ -360,7 +430,9 @@ section{scroll-margin-top:64px}
         <h2>Shop</h2>
         <span class="hand">little things, made to love</span>
       </div>
-      <div class="grid" id="productGrid" aria-live="polite"></div>
+      <div class="vibes" id="vibes" role="group" aria-label="Shop by vibe"></div>
+      <p class="shop-count" id="shopCount" aria-live="polite"></p>
+      <div class="grid" id="productGrid"></div>
       <div class="more">
         <div class="soon"><span class="soon-tag">Coming soon</span><h3>Cozy hoodies</h3><p>Same soft feel, made for Bengaluru evenings.</p></div>
         <div class="soon"><span class="soon-tag">Coming soon</span><h3>Home decor</h3><p>Little things for your shelves and walls.</p></div>
@@ -379,14 +451,15 @@ section{scroll-margin-top:64px}
 
   <section id="ideas">
     <div class="wrap">
-      <div class="idea">
+      <div class="idea collapsed" id="ideaBox">
         <div>
           <span class="hand">your idea, our next drop</span>
           <h2>What should we make next?</h2>
           <p>A food you miss, a line your amma always says, a tee you wish existed. Tell us, and if we make it, the first one's yours at a special price.</p>
+          <div class="cta idea-open"><button type="button" class="btn btn-primary" id="ideaOpen" aria-expanded="false" aria-controls="ideaEmbed">Share your idea</button></div>
         </div>
-        <div class="idea-embed">
-          <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfViHLLII7TdNNs2TJLFXakcmrcf9OgcmxHeP_fb-eDt4943A/viewform?embedded=true" title="Tell us what we should print next" loading="lazy" id="ideaFrame">Loading…</iframe>
+        <div class="idea-embed" id="ideaEmbed" hidden>
+          <iframe data-src="https://docs.google.com/forms/d/e/1FAIpQLSfViHLLII7TdNNs2TJLFXakcmrcf9OgcmxHeP_fb-eDt4943A/viewform?embedded=true" title="Tell us what we should print next" id="ideaFrame">Loading…</iframe>
           <p class="note">Rather chat? <a href="https://wa.me/918892181354?text=Hi%20Ellie%20%26%20Pip!%20I%20have%20an%20idea%20for%20your%20next%20design%3A%20">Send your idea on WhatsApp</a></p>
         </div>
       </div>
@@ -876,24 +949,56 @@ var REVIEWS = [
   function $(id){return document.getElementById(id);}
   function rupee(n){return "\u20B9"+n;}
 
+  var VIBES=[
+    {k:'all',label:'All tees'},
+    {k:'food',label:'Coffee & Food',img:'img/cover-coffee.webp',ids:['filter-coffee','chaya-kudicho','espresso','tasty-food']},
+    {k:'mood',label:'Moods & Memes',img:'img/cover-tomorrow.webp',ids:['start-tomorrow','yoga-punching','yoga-oversized','fav-things','espresso','pawsitive-energy']},
+    {k:'kids',label:'Kids & Family',img:'img/cover-kids-girls.webp',ids:['dino-family','ellie-pip-girls','ellie-pip-boys']},
+    {k:'blr',label:'Namma Bengaluru',img:'img/cover-shankar.webp',ids:['shankar-nag','filter-coffee','chaya-kudicho']},
+    {k:'women',label:'Crop tops',img:'img/cover-yoga.webp',ids:['yoga-punching']}
+  ];
+  var BADGES={'dino-family':['New','fam'],'shankar-nag':['New',''],'pawsitive-energy':['New','']};
+  function pill(p){var t=(p.type||'').toLowerCase();
+    if(p.sets) return 'Family set'; if(t.indexOf('crop')>-1) return 'Crop top';
+    if(t.indexOf('girls')>-1||t.indexOf('boys')>-1) return 'Kids'; if(t.indexOf('unisex')>-1) return 'Oversized'; return p.type;}
+  var cards={};
   PRODUCTS.forEach(function(p){
     var start=p.colours.filter(function(x){return x.c===p.startColour;})[0]||p.colours[0];
     var card=document.createElement('button');
     card.type='button'; card.className='pcard'; card.setAttribute('aria-label','View '+p.name);
-    card.innerHTML='<div class="pimg'+(p.cover?' pcover':'')+'"><img src="'+(p.cover||p.image(start.c,(p.sides||['back','front'])[0]))+'" alt="'+p.name+' by Ellie &amp; Pip" loading="lazy"></div>'+
-      '<div class="pbody"><span class="ptype">'+p.type+'</span><h3>'+p.nameHtml+'</h3>'+
+    var bd=BADGES[p.id];
+    card.innerHTML=(bd?'<span class="pbadge '+bd[1]+'">'+bd[0]+'</span>':'')+'<div class="pimg'+(p.cover?' pcover':'')+'"><img src="'+(p.cover||p.image(start.c,(p.sides||['back','front'])[0]))+'" alt="'+p.name+' by Ellie &amp; Pip" loading="lazy"></div>'+
+      '<div class="pbody"><span class="ptype pill">'+pill(p)+'</span><h3>'+p.nameHtml+'</h3>'+
       '<div class="prow"><strong>'+(p.cardPrice||rupee(p.price))+'</strong><span class="dots">'+
       p.colours.filter(function(x){return !x.girlOnly;}).map(function(x){return '<i style="background:'+x.hex+'"></i>';}).join('')+
       '</span></div><span class="pcount">'+p.colours.filter(function(x){return !x.girlOnly;}).length+' colours · '+p.sizes[0]+'–'+p.sizes[p.sizes.length-1]+'</span></div>';
     card.addEventListener('click',function(){openProduct(p);});
-    grid.appendChild(card);
+    grid.appendChild(card); cards[p.id]=card;
   });
+  (function(){
+    var box=$('vibes'), btns=[];
+    function pick(v){
+      btns.forEach(function(b){b.setAttribute('aria-pressed',b._k===v.k?'true':'false');});
+      var n=0; PRODUCTS.forEach(function(p){var show=v.k==='all'||v.ids.indexOf(p.id)>-1; cards[p.id].hidden=!show; if(show)n++;});
+      $('shopCount').textContent=(v.k==='all'?'All ':v.label+' · ')+n+(n===1?' design':' designs');
+    }
+    VIBES.forEach(function(v){
+      var b=document.createElement('button'); b.type='button'; b.className='vibe'; b._k=v.k;
+      b.innerHTML='<span class="ring">'+(v.img?'<img src="'+v.img+'" alt="" loading="lazy">':'<span class="all">all</span>')+'</span><span class="lbl">'+v.label+'</span>';
+      b.addEventListener('click',function(){pick(v);}); box.appendChild(b); btns.push(b);
+    });
+    pick(VIBES[0]);
+  })();
 
 
 
   (function(){ /* a Google Form reloads its frame after submit: shrink the box to fit the thank-you note */
     var fr=document.getElementById('ideaFrame'), loads=0;
     if(fr) fr.addEventListener('load',function(){ loads++; if(loads>1) fr.classList.add('done'); });
+    var ob=document.getElementById('ideaOpen');
+    ob.addEventListener('click',function(){ if(!fr.src) fr.src=fr.getAttribute('data-src');
+      document.getElementById('ideaEmbed').hidden=false; document.getElementById('ideaBox').classList.remove('collapsed');
+      ob.closest('.cta').hidden=true; fr.focus(); });
   })();
 
   (function(){
@@ -1138,6 +1243,25 @@ var REVIEWS = [
     if(e.key!=='Escape')return;
     if(!cm.hidden)closeChart(); else if(!pm.hidden)closeProduct();
   });
+
+  (function(){
+    var el=$('heroSlider'); if(!el) return;
+    var tr=el.querySelector('.hs-track'), sl=tr.children, dots=el.querySelector('.hs-dots'), i=0, t=null;
+    var still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+    Array.prototype.forEach.call(sl,function(s,k){var d=document.createElement('button');d.type='button';d.setAttribute('aria-label','Slide '+(k+1));d.addEventListener('click',function(){go(k);restart();});dots.appendChild(d);});
+    function go(k){i=(k+sl.length)%sl.length;tr.style.transform='translateX('+(-100*i)+'%)';
+      Array.prototype.forEach.call(dots.children,function(d,n){d.classList.toggle('on',n===i);});
+      Array.prototype.forEach.call(sl,function(s,n){s.setAttribute('aria-hidden',n===i?'false':'true');Array.prototype.forEach.call(s.querySelectorAll('a'),function(a){a.tabIndex=n===i?0:-1;});});}
+    function restart(){if(still)return;clearInterval(t);t=setInterval(function(){go(i+1);},4500);}
+    el.querySelector('.hs-prev').addEventListener('click',function(){go(i-1);restart();});
+    el.querySelector('.hs-next').addEventListener('click',function(){go(i+1);restart();});
+    var sx=null; tr.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
+    tr.addEventListener('touchend',function(e){if(sx===null)return;var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40){go(i+(dx<0?1:-1));restart();}sx=null;});
+    el.addEventListener('mouseenter',function(){clearInterval(t);}); el.addEventListener('mouseleave',restart);
+    go(0); restart();
+    var an=document.querySelectorAll('#announce span'), j=0;
+    if(an.length>1 && !still) setInterval(function(){an[j].classList.remove('on');j=(j+1)%an.length;an[j].classList.add('on');},4000);
+  })();
 
   function fromHash(){
     var id=location.hash.replace('#','');
