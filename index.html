@@ -1120,12 +1120,12 @@ var REVIEWS = [
     var ms=curSet().members, key=ms.map(function(m){return m+':'+(isMix()?(mcol[m]||defCol(m)):colour.c)+':'+(kfit[m]||'');}).join('|')+'|'+nameK;
     if(key===compKey) return; compKey=key;
     var srcs=ms.map(function(m){return memberImg(m,isMix()?(mcol[m]||defCol(m)):colour.c);}), imgs=[], left=srcs.length;
-    srcs.forEach(function(u,i){var im=new Image(); im.onload=im.onerror=function(){ if(--left===0) draw(); }; im.src=u; imgs[i]=im;});
+    srcs.forEach(function(u,i){var im=new Image(), tried=false; im.onload=function(){ if(--left===0) draw(); }; im.onerror=function(){ if(!tried && /-n[12]\.webp$/.test(u)){ tried=true; im.src=u.replace(/-n[12]\.webp$/,'.webp'); return; } if(--left===0) draw(); }; im.src=u; imgs[i]=im;});
     function draw(){
       if(key!==compKey) return;
       var cv=document.createElement('canvas'); cv.width=1024; cv.height=1280; var x=cv.getContext('2d');
       x.fillStyle='#F2F2F2'; x.fillRect(0,0,1024,1280);
-      var slots=ms.length===4?[[0,10,512,640],[512,10,512,640],[40,660,460,575],[524,660,460,575]]:ms.length===3?[[0,40,512,640],[512,40,512,640],[256,620,512,640]]:[[0,0,640,800],[384,480,640,800]];
+      var slots=ms.length===4?[[0,10,512,640],[512,10,512,640],[40,660,460,575],[524,660,460,575]]:ms.length===3?[[0,40,512,640],[512,40,512,640],[256,620,512,640]]:[[-30,190,600,750],[510,430,480,600]];
       imgs.forEach(function(im,i){ if(im.naturalWidth){ var sl=slots[i]; x.drawImage(im,sl[0],sl[1],sl[2],sl[3]); }});
       try{ $('pImg').src=cv.toDataURL('image/webp',0.85); }catch(e){}
     }
