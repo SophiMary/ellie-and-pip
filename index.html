@@ -325,8 +325,13 @@ section{scroll-margin-top:64px}
 
 /* announcement bar */
 .announce{background:var(--ink);color:var(--paper);font-size:14px;letter-spacing:.04em;text-align:center;padding:9px 16px;overflow:hidden;position:relative;height:38px}
-.announce span{position:absolute;inset:0;display:block;line-height:38px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 16px;opacity:0;transform:translateY(8px);transition:opacity .5s,transform .5s}
-.announce span.on{opacity:1;transform:none}
+.announce span{position:absolute;inset:0;display:block;line-height:38px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 16px;opacity:0;visibility:hidden;transition:opacity .35s,visibility 0s .35s}
+.announce span.on{opacity:1;visibility:visible;transition:opacity .35s .35s,visibility 0s .35s}
+@media (min-width:1000px){
+  .announce{display:flex;justify-content:center;align-items:center;gap:0;padding:0 20px}
+  .announce span{position:static;opacity:1;visibility:visible;transition:none;padding:0;overflow:visible}
+  .announce span+span::before{content:"·";margin:0 18px;opacity:.5}
+}
 .announce a{color:#F3D9D5;font-weight:700}
 @media (prefers-reduced-motion: reduce){.announce span{transition:none}}
 
@@ -380,7 +385,7 @@ section{scroll-margin-top:64px}
 
 <div class="announce" id="announce" role="region" aria-label="Announcements">
   <span class="on">🦖 New: <a href="#dino-family">Dino Family matching tees</a></span>
-  <span>💵 Cash on Delivery available (+₹50) · Ships across India</span>
+  <span>💵 Cash on Delivery (+₹50) · Ships across India</span>
   <span>Order in 1 tap on <a href="https://wa.me/918892181354?text=Hi%20Ellie%20%26%20Pip!">WhatsApp</a> or Instagram DM</span>
 </div>
 <header>
@@ -1262,7 +1267,7 @@ var REVIEWS = [
     el.addEventListener('mouseenter',function(){clearInterval(t);}); el.addEventListener('mouseleave',restart);
     go(0); restart();
     var an=document.querySelectorAll('#announce span'), j=0;
-    if(an.length>1 && !still) setInterval(function(){an[j].classList.remove('on');j=(j+1)%an.length;an[j].classList.add('on');},4000);
+    if(an.length>1 && !still && !matchMedia('(min-width:1000px)').matches) setInterval(function(){an[j].classList.remove('on');j=(j+1)%an.length;an[j].classList.add('on');},4000);
   })();
 
   function fromHash(){
