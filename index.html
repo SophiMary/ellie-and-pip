@@ -366,6 +366,12 @@ section{scroll-margin-top:64px}
 .vibe:hover .ring{transform:translateY(-2px)}
 .vibe[aria-pressed="true"] .ring{border-color:var(--rose)}
 .vibe[aria-pressed="true"] span.lbl{font-weight:700;color:var(--rose)}
+@media (max-width:560px){
+  .vibes{display:grid;grid-template-columns:repeat(3,1fr);overflow:visible;margin:0 0 14px;padding:4px 0 0;gap:16px 8px}
+  .vibe{width:auto;align-content:start}
+  .vibe .ring{width:74px;height:74px}
+  .vibe span.lbl{font-size:13.5px}
+}
 .shop-count{font-size:14px;opacity:.75;margin:-6px 0 16px}
 
 /* card badges + fit pills */
