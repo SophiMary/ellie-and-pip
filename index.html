@@ -534,6 +534,97 @@ var PRODUCTS = [
     }
   },
   {
+    id: "shankar-nag",
+    name: "Shankar Nag Tribute Oversized T-Shirt",
+    nameHtml: "Shankar <em>Nag</em> Tee",
+    type: "Unisex T-shirt",
+    price: 649,
+    fit: "unisex · oversized",
+    desc: "For everyone who grew up on Malgudi Days and Auto Raja. A vintage-style portrait of Karnataka's own Shankar Nag against a golden sun, with his name in English and \u0CB6\u0C82\u0C95\u0CB0\u0CCD \u0CA8\u0CBE\u0C97\u0CCD underneath.",
+    specs: [["Fabric","100% cotton, 180 GSM. Structured drape without the bulk."],["Fit","Unisex oversized, with extra length and a dropped sleeve."],["Print","Large front print in DTG, made fresh for your order."],["Care","Wash inside out in cold water. Do not iron directly on the print. Do not tumble dry."]],
+    sizes: ["XS","S","M","L","XL","XXL"],
+    chart: "oversized",
+    views: [["closeup","Front print"],["front","Full front"],["back","Back"]],
+    startColour: "2",
+    cover: "img/cover-shankar.webp",
+    colours: [
+      {c:"1", name:"White", hex:"#FFFFFF"},
+      {c:"2", name:"Black", hex:"#151515"},
+      {c:"3", name:"Navy", hex:"#2D314A"}
+    ],
+    image: function(c, view){ return "img/shankar-" + c + "-" + view + ".webp"; }
+  },
+  {
+    id: "start-tomorrow",
+    name: "I'll Start Tomorrow Oversized T-Shirt",
+    nameHtml: "I'll Start <em>Tomorrow</em> Tee",
+    type: "Unisex T-shirt",
+    price: 629,
+    fit: "unisex · oversized",
+    desc: "Day 847 of starting tomorrow. Our tired little blob is flat on the floor next to a to-do list with Gym, Work and Life all crossed off. \"I'll start tomorrow\" across the front, for everyone who means it every single time.",
+    specs: [["Fabric","100% cotton, 180 GSM. Structured drape without the bulk."],["Fit","Unisex oversized, with extra length and a dropped sleeve."],["Print","Front chest print in durable DTF, made fresh for your order."],["Care","Wash inside out in cold water. Do not iron directly on the print. Do not tumble dry."]],
+    sizes: ["XS","S","M","L","XL","XXL"],
+    chart: "oversized",
+    views: [["closeup","Front print"],["front","Full front"],["back","Back"]],
+    startColour: "45",
+    cover: "img/cover-tomorrow.webp",
+    colours: [
+      {c:"1", name:"White", hex:"#FFFFFF"},
+      {c:"4", name:"Grey", hex:"#C3C3C3"},
+      {c:"45", name:"Pink", hex:"#FFD5DB"},
+      {c:"49", name:"Lavender", hex:"#BBB1D2"},
+      {c:"51", name:"Beige", hex:"#EBCD8B"},
+      {c:"2", name:"Black", hex:"#151515"},
+      {c:"3", name:"Navy", hex:"#2D314A"}
+    ],
+    image: function(c, view){ return "img/tomorrow-" + c + "-" + view + ".webp"; }
+  },
+  {
+    id: "yoga-punching",
+    name: "Yoga Because Punching People Is Wrong Crop Top",
+    nameHtml: "Yoga <em>Calm</em> Crop Top",
+    type: "Women's crop top",
+    price: 529,
+    fit: "women · crop top",
+    desc: "For everyone whose inner peace is held together by deep breaths and sheer willpower. Our grumpy little yogi is holding her warrior pose and her temper, and only one of them is working. \"Yoga, because punching people is wrong.\" on the front.",
+    specs: [["Fit","Women's crop top: a fitted, cropped cut that sits just above the waist."],["Print","Front print in durable DTF, made fresh for your order."],["Care","Wash inside out in cold water. Do not iron directly on the print. Do not tumble dry."]],
+    sizes: ["XS","S","M","L","XL","XXL"],
+    chart: "cropTop",
+    views: [["closeup","Front print"],["model","Full look"],["back","Back"]],
+    startColour: "2",
+    cover: "img/cover-yoga.webp",
+    colours: [
+      {c:"2", name:"Black", hex:"#151515"},
+      {c:"3", name:"Navy", hex:"#2D314A"}
+    ],
+    image: function(c, view){ return "img/yoga-" + c + "-" + view + ".webp"; }
+  },
+  {
+    id: "yoga-oversized",
+    name: "Yoga Because Punching People Is Wrong Oversized T-Shirt",
+    nameHtml: "Yoga <em>Calm</em> Tee",
+    type: "Unisex T-shirt",
+    price: 649,
+    fit: "unisex · oversized",
+    desc: "Our grumpy little yogi, big and bold across the front of a roomy oversized tee. She's holding her warrior pose and her temper, and only one of them is working. \"Yoga, because punching people is wrong.\"",
+    specs: [["Fabric","100% cotton, 180 GSM. Structured drape without the bulk."],["Fit","Unisex oversized, with extra length and a dropped sleeve."],["Print","Large front print in durable DTF, made fresh for your order."],["Care","Wash inside out in cold water. Do not iron directly on the print. Do not tumble dry."]],
+    sizes: ["XS","S","M","L","XL","XXL"],
+    chart: "oversized",
+    views: [["closeup","Front print"],["front","Full front"],["back","Back"]],
+    startColour: "3",
+    cover: "img/cover-yogaov.webp",
+    colours: [
+      {c:"1", name:"White", hex:"#FFFFFF"},
+      {c:"4", name:"Grey", hex:"#C3C3C3"},
+      {c:"45", name:"Pink", hex:"#FFD5DB"},
+      {c:"49", name:"Lavender", hex:"#BBB1D2"},
+      {c:"51", name:"Beige", hex:"#EBCD8B"},
+      {c:"2", name:"Black", hex:"#151515"},
+      {c:"3", name:"Navy", hex:"#2D314A"}
+    ],
+    image: function(c, view){ return "img/yogaov-" + c + "-" + view + ".webp"; }
+  },
+  {
     id: "tasty-food",
     name: "Tasty Food Tee",
     nameHtml: "Tasty <em>Food</em> Tee",
@@ -631,76 +722,6 @@ var PRODUCTS = [
     image: function(c, side){ return "img/espresso-" + c + "-" + side + ".webp"; }
   },
   {
-    id: "yoga-punching",
-    name: "Yoga Because Punching People Is Wrong Crop Top",
-    nameHtml: "Yoga <em>Calm</em> Crop Top",
-    type: "Women's crop top",
-    price: 529,
-    fit: "women · crop top",
-    desc: "For everyone whose inner peace is held together by deep breaths and sheer willpower. Our grumpy little yogi is holding her warrior pose and her temper, and only one of them is working. \"Yoga, because punching people is wrong.\" on the front.",
-    specs: [["Fit","Women's crop top: a fitted, cropped cut that sits just above the waist."],["Print","Front print in durable DTF, made fresh for your order."],["Care","Wash inside out in cold water. Do not iron directly on the print. Do not tumble dry."]],
-    sizes: ["XS","S","M","L","XL","XXL"],
-    chart: "cropTop",
-    views: [["closeup","Front print"],["model","Full look"],["back","Back"]],
-    startColour: "2",
-    cover: "img/cover-yoga.webp",
-    colours: [
-      {c:"2", name:"Black", hex:"#151515"},
-      {c:"3", name:"Navy", hex:"#2D314A"}
-    ],
-    image: function(c, view){ return "img/yoga-" + c + "-" + view + ".webp"; }
-  },
-  {
-    id: "yoga-oversized",
-    name: "Yoga Because Punching People Is Wrong Oversized T-Shirt",
-    nameHtml: "Yoga <em>Calm</em> Tee",
-    type: "Unisex T-shirt",
-    price: 649,
-    fit: "unisex · oversized",
-    desc: "Our grumpy little yogi, big and bold across the front of a roomy oversized tee. She's holding her warrior pose and her temper, and only one of them is working. \"Yoga, because punching people is wrong.\"",
-    specs: [["Fabric","100% cotton, 180 GSM. Structured drape without the bulk."],["Fit","Unisex oversized, with extra length and a dropped sleeve."],["Print","Large front print in durable DTF, made fresh for your order."],["Care","Wash inside out in cold water. Do not iron directly on the print. Do not tumble dry."]],
-    sizes: ["XS","S","M","L","XL","XXL"],
-    chart: "oversized",
-    views: [["closeup","Front print"],["front","Full front"],["back","Back"]],
-    startColour: "3",
-    cover: "img/cover-yogaov.webp",
-    colours: [
-      {c:"1", name:"White", hex:"#FFFFFF"},
-      {c:"4", name:"Grey", hex:"#C3C3C3"},
-      {c:"45", name:"Pink", hex:"#FFD5DB"},
-      {c:"49", name:"Lavender", hex:"#BBB1D2"},
-      {c:"51", name:"Beige", hex:"#EBCD8B"},
-      {c:"2", name:"Black", hex:"#151515"},
-      {c:"3", name:"Navy", hex:"#2D314A"}
-    ],
-    image: function(c, view){ return "img/yogaov-" + c + "-" + view + ".webp"; }
-  },
-  {
-    id: "start-tomorrow",
-    name: "I'll Start Tomorrow Oversized T-Shirt",
-    nameHtml: "I'll Start <em>Tomorrow</em> Tee",
-    type: "Unisex T-shirt",
-    price: 629,
-    fit: "unisex · oversized",
-    desc: "Day 847 of starting tomorrow. Our tired little blob is flat on the floor next to a to-do list with Gym, Work and Life all crossed off. \"I'll start tomorrow\" across the front, for everyone who means it every single time.",
-    specs: [["Fabric","100% cotton, 180 GSM. Structured drape without the bulk."],["Fit","Unisex oversized, with extra length and a dropped sleeve."],["Print","Front chest print in durable DTF, made fresh for your order."],["Care","Wash inside out in cold water. Do not iron directly on the print. Do not tumble dry."]],
-    sizes: ["XS","S","M","L","XL","XXL"],
-    chart: "oversized",
-    views: [["closeup","Front print"],["front","Full front"],["back","Back"]],
-    startColour: "4",
-    cover: "img/cover-tomorrow.webp",
-    colours: [
-      {c:"1", name:"White", hex:"#FFFFFF"},
-      {c:"4", name:"Grey", hex:"#C3C3C3"},
-      {c:"45", name:"Pink", hex:"#FFD5DB"},
-      {c:"49", name:"Lavender", hex:"#BBB1D2"},
-      {c:"51", name:"Beige", hex:"#EBCD8B"},
-      {c:"2", name:"Black", hex:"#151515"},
-      {c:"3", name:"Navy", hex:"#2D314A"}
-    ],
-    image: function(c, view){ return "img/tomorrow-" + c + "-" + view + ".webp"; }
-  },
-  {
     id: "pawsitive-energy",
     name: "Pawsitive Energy Oversized T-Shirt",
     nameHtml: "Pawsitive <em>Energy</em> Tee",
@@ -724,27 +745,6 @@ var PRODUCTS = [
       {c:"3", name:"Navy", hex:"#2D314A"}
     ],
     image: function(c, view){ return "img/cats-" + c + "-" + view + ".webp"; }
-  },
-  {
-    id: "shankar-nag",
-    name: "Shankar Nag Tribute Oversized T-Shirt",
-    nameHtml: "Shankar <em>Nag</em> Tee",
-    type: "Unisex T-shirt",
-    price: 649,
-    fit: "unisex · oversized",
-    desc: "For everyone who grew up on Malgudi Days and Auto Raja. A vintage-style portrait of Karnataka's own Shankar Nag against a golden sun, with his name in English and \u0CB6\u0C82\u0C95\u0CB0\u0CCD \u0CA8\u0CBE\u0C97\u0CCD underneath.",
-    specs: [["Fabric","100% cotton, 180 GSM. Structured drape without the bulk."],["Fit","Unisex oversized, with extra length and a dropped sleeve."],["Print","Large front print in DTG, made fresh for your order."],["Care","Wash inside out in cold water. Do not iron directly on the print. Do not tumble dry."]],
-    sizes: ["XS","S","M","L","XL","XXL"],
-    chart: "oversized",
-    views: [["closeup","Front print"],["front","Full front"],["back","Back"]],
-    startColour: "2",
-    cover: "img/cover-shankar.webp",
-    colours: [
-      {c:"1", name:"White", hex:"#FFFFFF"},
-      {c:"2", name:"Black", hex:"#151515"},
-      {c:"3", name:"Navy", hex:"#2D314A"}
-    ],
-    image: function(c, view){ return "img/shankar-" + c + "-" + view + ".webp"; }
   },
   {
     id: "dino-family",
