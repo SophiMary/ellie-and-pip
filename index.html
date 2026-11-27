@@ -358,6 +358,10 @@ section{scroll-margin-top:64px}
 @media (max-width:760px){.hero-slider{max-width:none}.hero{gap:24px}}
 
 /* shop by vibe */
+.who{display:inline-flex;gap:6px;padding:5px;margin:0 0 18px;background:var(--paper-deep);border-radius:999px}
+.who button{border:0;background:none;font:inherit;font-weight:700;font-size:16px;color:var(--ink);padding:10px 22px;border-radius:999px;cursor:pointer;transition:background .2s,color .2s}
+.who button[aria-selected="true"]{background:var(--ink);color:var(--paper)}
+.who button:focus-visible{outline:2px solid var(--rose);outline-offset:2px}
 .vibes{display:flex;gap:14px;overflow-x:auto;padding:4px 20px 14px;margin:0 -20px 18px;scroll-snap-type:x mandatory;scrollbar-width:none}
 .vibes::-webkit-scrollbar{display:none}
 .vibe{flex:none;scroll-snap-align:start;display:grid;justify-items:center;gap:8px;background:none;border:0;padding:0;cursor:pointer;font:inherit;color:var(--ink);width:92px}
@@ -470,6 +474,7 @@ section{scroll-margin-top:64px}
         <h2>Shop</h2>
         <span class="hand">little things, made to love</span>
       </div>
+      <div class="who" id="who" role="tablist" aria-label="Shop for"><button type="button" role="tab" data-k="adult" aria-selected="true">Grown-ups</button><button type="button" role="tab" data-k="kids" aria-selected="false">Kids</button></div>
       <div class="vibes" id="vibes" role="group" aria-label="Shop by vibe"></div>
       <p class="shop-count" id="shopCount" aria-live="polite"></p>
       <div class="grid" id="productGrid"></div>
@@ -1050,14 +1055,26 @@ var REVIEWS = [
   function $(id){return document.getElementById(id);}
   function rupee(n){return "\u20B9"+n;}
 
-  var VIBES=[
-    {k:'all',label:'All tees'},
-    {k:'food',label:'Coffee & Food',img:'img/cover-coffee.webp',ids:['filter-coffee','chaya-kudicho','espresso','tasty-food']},
-    {k:'mood',label:'Moods & Memes',img:'img/cover-tomorrow.webp',ids:['start-tomorrow','yoga-punching','yoga-oversized','fav-things','espresso','pawsitive-energy']},
-    {k:'kids',label:'Kids & Family',img:'img/cover-kids-girls.webp',ids:['dino-family','here-comes-trouble','here-comes-trouble-boys','ellie-pip-girls','ellie-pip-boys']},
-    {k:'blr',label:'Namma Bengaluru',img:'img/cover-shankar.webp',ids:['shankar-nag','filter-coffee','chaya-kudicho']},
-    {k:'women',label:'Crop tops',img:'img/cover-yoga.webp',ids:['yoga-punching']}
-  ];
+  var KIDS=['here-comes-trouble','here-comes-trouble-boys','ellie-pip-girls','ellie-pip-boys','dino-family'];
+  var SECTIONS={
+    adult:{label:'Grown-ups', vibes:[
+      {k:'all',label:'All tees'},
+      {k:'food',label:'Coffee & Food',img:'img/cover-coffee.webp',ids:['filter-coffee','chaya-kudicho','espresso','tasty-food']},
+      {k:'mood',label:'Moods & Memes',img:'img/cover-tomorrow.webp',ids:['start-tomorrow','yoga-punching','yoga-oversized','fav-things','espresso','pawsitive-energy']},
+      {k:'blr',label:'Namma Bengaluru',img:'img/cover-shankar.webp',ids:['shankar-nag','filter-coffee','chaya-kudicho']},
+      {k:'women',label:'Crop tops',img:'img/cover-yoga.webp',ids:['yoga-punching']},
+      {k:'fam',label:'Family sets',img:'img/cover-dino.webp',ids:['dino-family']}
+    ]},
+    kids:{label:'Kids', vibes:[
+      {k:'all',label:'All kids'},
+      {k:'girls',label:'Girls',img:'img/cover-kids-girls.webp',ids:['here-comes-trouble','ellie-pip-girls','dino-family']},
+      {k:'boys',label:'Boys',img:'img/cover-kids-boys.webp',ids:['here-comes-trouble-boys','ellie-pip-boys','dino-family']},
+      {k:'ellie',label:'Ellie & Pip',img:'img/cover-trouble.webp',ids:['here-comes-trouble','here-comes-trouble-boys','ellie-pip-girls','ellie-pip-boys']},
+      {k:'fam',label:'Family sets',img:'img/cover-dino.webp',ids:['dino-family']}
+    ]}
+  };
+  SECTIONS.adult.ids=PRODUCTS.map(function(p){return p.id;}).filter(function(id){return KIDS.indexOf(id)<0||id==='dino-family';});
+  SECTIONS.kids.ids=KIDS.slice();
   var BADGES={'dino-family':['New','fam'],'shankar-nag':['New',''],'pawsitive-energy':['New','']};
   function pill(p){var t=(p.type||'').toLowerCase();
     if(p.sets) return 'Family set'; if(t.indexOf('crop')>-1) return 'Crop top';
@@ -1076,19 +1093,29 @@ var REVIEWS = [
     card.addEventListener('click',function(){openProduct(p);});
     grid.appendChild(card); cards[p.id]=card;
   });
+  var setSection;
   (function(){
-    var box=$('vibes'), btns=[];
+    var box=$('vibes'), btns=[], sec='adult';
+    var tabs=Array.prototype.slice.call($('who').querySelectorAll('button'));
     function pick(v){
+      var S=SECTIONS[sec];
       btns.forEach(function(b){b.setAttribute('aria-pressed',b._k===v.k?'true':'false');});
-      var n=0; PRODUCTS.forEach(function(p){var show=v.k==='all'||v.ids.indexOf(p.id)>-1; cards[p.id].hidden=!show; if(show)n++;});
-      $('shopCount').textContent=(v.k==='all'?'All ':v.label+' · ')+n+(n===1?' design':' designs');
+      var n=0; PRODUCTS.forEach(function(p){var show=v.k==='all'?S.ids.indexOf(p.id)>-1:v.ids.indexOf(p.id)>-1; cards[p.id].hidden=!show; if(show)n++;});
+      $('shopCount').textContent=(v.k==='all'?S.label+' · all ':S.label+' · '+v.label+' · ')+n+(n===1?' design':' designs');
     }
-    VIBES.forEach(function(v){
-      var b=document.createElement('button'); b.type='button'; b.className='vibe'; b._k=v.k;
-      b.innerHTML='<span class="ring">'+(v.img?'<img src="'+v.img+'" alt="" loading="lazy">':'<span class="all">all</span>')+'</span><span class="lbl">'+v.label+'</span>';
-      b.addEventListener('click',function(){pick(v);}); box.appendChild(b); btns.push(b);
-    });
-    pick(VIBES[0]);
+    function build(){
+      box.innerHTML=''; btns=[];
+      SECTIONS[sec].vibes.forEach(function(v){
+        var b=document.createElement('button'); b.type='button'; b.className='vibe'; b._k=v.k;
+        b.innerHTML='<span class="ring">'+(v.img?'<img src="'+v.img+'" alt="" loading="lazy">':'<span class="all">all</span>')+'</span><span class="lbl">'+v.label+'</span>';
+        b.addEventListener('click',function(){pick(v);}); box.appendChild(b); btns.push(b);
+      });
+      pick(SECTIONS[sec].vibes[0]);
+    }
+    setSection=function(k){ if(!SECTIONS[k]) return; sec=k;
+      tabs.forEach(function(t){t.setAttribute('aria-selected',t.getAttribute('data-k')===k?'true':'false');}); build(); };
+    tabs.forEach(function(t){ t.addEventListener('click',function(){setSection(t.getAttribute('data-k'));}); });
+    build();
   })();
 
 
@@ -1400,6 +1427,7 @@ var REVIEWS = [
   function fromHash(){
     var id=location.hash.replace('#','');
     var p=PRODUCTS.filter(function(x){return x.id===id;})[0];
+    if(p && KIDS.indexOf(p.id)>-1 && p.id!=='dino-family') setSection('kids');
     if(p && pm.hidden) openProduct(p,true);
   }
   window.addEventListener('hashchange',fromHash); fromHash();
