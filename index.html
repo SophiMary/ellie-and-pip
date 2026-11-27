@@ -29,6 +29,7 @@
 {"@type":"ListItem","position":4,"item":{"@type":"Product","name":"Ellie & Pip Elephant Girls T-Shirt","description":"Cute watercolour elephant and bird t-shirt for girls, sizes 0-12 months to 13 years.","image":"img/cover-kids-girls.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"Offer","price":"449","priceCurrency":"INR","availability":"https://schema.org/InStock"}}},
 {"@type":"ListItem","position":5,"item":{"@type":"Product","name":"Ellie & Pip Elephant Boys T-Shirt","description":"Cute watercolour elephant and bird t-shirt for boys, sizes 0-12 months to 13 years.","image":"img/cover-kids-boys.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"Offer","price":"449","priceCurrency":"INR","availability":"https://schema.org/InStock"}}},
 {"@type":"ListItem","position":14,"item":{"@type":"Product","name":"Here Comes Trouble Girls T-Shirt","description":"Watercolour elephant on a skateboard with \"here comes trouble!\", girls tee, sizes 0-12 months to 13 years.","image":"img/cover-trouble.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"Offer","price":"449","priceCurrency":"INR","availability":"https://schema.org/InStock"}}},
+{"@type":"ListItem","position":15,"item":{"@type":"Product","name":"Here Comes Trouble Boys T-Shirt","description":"Watercolour elephant on a skateboard with \"here comes trouble!\", boys tee, sizes 0-12 months to 13 years.","image":"img/cover-trouble-boys.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"Offer","price":"449","priceCurrency":"INR","availability":"https://schema.org/InStock"}}},
 {"@type":"ListItem","position":11,"item":{"@type":"Product","name":"Dino Family Matching T-Shirts","description":"Matching Mamasaurus, Dadasaurus and Babysaurus family tees, also as Ammasaurus and Appasaurus. Family of 3 or 4, mom and kid, or dad and kid sets.","image":"img/cover-dino.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"AggregateOffer","lowPrice":"449","highPrice":"1699","priceCurrency":"INR","availability":"https://schema.org/InStock"}}},
 {"@type":"ListItem","position":12,"item":{"@type":"Product","name":"Pawsitive Energy Cats Oversized T-Shirt","description":"Cute cat oversized t-shirt with five kawaii cats and the line: Pawsitive Energy!","image":"img/cover-cats.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"Offer","price":"629","priceCurrency":"INR","availability":"https://schema.org/InStock"}}},
 {"@type":"ListItem","position":13,"item":{"@type":"Product","name":"Shankar Nag Tribute Oversized T-Shirt","description":"Shankar Nag tribute oversized t-shirt with a vintage-style portrait and his name in English and Kannada.","image":"img/cover-shankar.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"Offer","price":"649","priceCurrency":"INR","availability":"https://schema.org/InStock"}}}
@@ -943,6 +944,29 @@ var PRODUCTS = [
     image: function(c, side){ return "img/trouble-" + c + "-front.webp"; }
   },
   {
+    id: "here-comes-trouble-boys",
+    name: "Here Comes Trouble Boys Tee",
+    nameHtml: "Here Comes <em>Trouble</em> Boys Tee",
+    type: "Boys T-shirt",
+    cover: "img/cover-trouble-boys.webp",
+    fitImg: "img/kids-fit.webp",
+    price: 449,
+    fit: "boys fit",
+    desc: "Ellie zooms in on her skateboard, trunk up and grinning, with little Pip flapping to keep up. Soft watercolour art with \u201chere comes trouble!\u201d on the front, for your tiny speedster.",
+    specs: [["Fit","Boys cut: straight and roomy, a little longer in the body, with longer sleeves and a classic crew neck."],["Print","Front print, made fresh for your order."],["Care","Wash inside out in cold water, tumble dry low, iron inside out."]],
+    sizes: ["0-12M","12-23M","24-35M","36-47M","5Y","7Y","9Y","11Y","13Y"],
+    chart: "kidsBoys",
+    sides: ["front"],
+    startColour: "49",
+    colours: [
+      {c:"49", name:"Lavender", hex:"#BBB1D2"},
+      {c:"45", name:"Pink", hex:"#FFD5DB"},
+      {c:"51", name:"Beige", hex:"#EBCD8B"},
+      {c:"61", name:"Cream", hex:"#FFFAE7"}
+    ],
+    image: function(c, side){ return "img/troubleb-" + c + "-front.webp"; }
+  },
+  {
     id: "ellie-pip-girls",
     name: "Ellie & Pip Girls Tee",
     nameHtml: "Ellie <em>&amp;</em> Pip Girls Tee",
@@ -1022,7 +1046,7 @@ var REVIEWS = [
     {k:'all',label:'All tees'},
     {k:'food',label:'Coffee & Food',img:'img/cover-coffee.webp',ids:['filter-coffee','chaya-kudicho','espresso','tasty-food']},
     {k:'mood',label:'Moods & Memes',img:'img/cover-tomorrow.webp',ids:['start-tomorrow','yoga-punching','yoga-oversized','fav-things','espresso','pawsitive-energy']},
-    {k:'kids',label:'Kids & Family',img:'img/cover-kids-girls.webp',ids:['dino-family','here-comes-trouble','ellie-pip-girls','ellie-pip-boys']},
+    {k:'kids',label:'Kids & Family',img:'img/cover-kids-girls.webp',ids:['dino-family','here-comes-trouble','here-comes-trouble-boys','ellie-pip-girls','ellie-pip-boys']},
     {k:'blr',label:'Namma Bengaluru',img:'img/cover-shankar.webp',ids:['shankar-nag','filter-coffee','chaya-kudicho']},
     {k:'women',label:'Crop tops',img:'img/cover-yoga.webp',ids:['yoga-punching']}
   ];
