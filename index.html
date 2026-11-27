@@ -585,6 +585,10 @@ section{scroll-margin-top:64px}
         <h3 id="pName"></h3>
         <p id="pDesc"></p>
         <div id="pSetOpts" style="display:grid;gap:18px" hidden></div>
+        <div class="opt" id="pKidFit" hidden>
+          <span class="opt-label">For: <b id="pKidFitName"></b></span>
+          <div class="sizes" id="pKidFits" role="group" aria-label="Girl or boy"></div>
+        </div>
         <div class="opt">
           <span class="opt-label">Colour: <b id="pColour"></b></span>
           <div class="swatches" id="pSwatches" role="group" aria-label="Colour"></div>
@@ -1255,18 +1259,28 @@ var REVIEWS = [
   function pill(p){var t=(p.type||'').toLowerCase();
     if(p.sets) return 'Family set'; if(t.indexOf('crop')>-1) return 'Crop top';
     if(t.indexOf('girls')>-1||t.indexOf('boys')>-1) return 'Kids'; if(t.indexOf('unisex')>-1) return 'Oversized'; return p.type;}
+  var PAIRS=[['ellie-pip-girls','ellie-pip-boys'],['here-comes-trouble','here-comes-trouble-boys'],['beep-girls','beep-boys'],['smile-girls','smile-boys'],['dino-want-girls','dino-want-boys']];
+  var BYID={}; PRODUCTS.forEach(function(p){BYID[p.id]=p;});
+  var PRIMARY={};  /* any id -> id of the card that shows it */
+  PAIRS.forEach(function(pr){ if(!BYID[pr[0]]||!BYID[pr[1]]) return; BYID[pr[0]].pair=pr[1]; BYID[pr[0]].fitK='girl'; BYID[pr[1]].pair=pr[0]; BYID[pr[1]].fitK='boy'; PRIMARY[pr[1]]=pr[0]; });
+  var lastVibe='all';
   var cards={};
   PRODUCTS.forEach(function(p){
+    if(PRIMARY[p.id]) return;
+    var mate=p.pair?BYID[p.pair]:null;
+    var cols=p.colours.filter(function(x){return !x.girlOnly;});
+    if(mate){ var seen={}; cols=cols.concat(mate.colours).filter(function(x){var k=x.hex.toUpperCase(); if(seen[k])return false; seen[k]=1; return true;}); }
     var start=p.colours.filter(function(x){return x.c===p.startColour;})[0]||p.colours[0];
     var card=document.createElement('button');
-    card.type='button'; card.className='pcard'; card.setAttribute('aria-label','View '+p.name);
+    var cname=mate?p.name.replace(/Girls Tee$/,'Kids Tee'):p.name, chtml=mate?p.nameHtml.replace(/Girls Tee$/,'Kids Tee'):p.nameHtml;
+    card.type='button'; card.className='pcard'; card.setAttribute('aria-label','View '+cname);
     var bd=BADGES[p.id];
     card.innerHTML=(bd?'<span class="pbadge '+bd[1]+'">'+bd[0]+'</span>':'')+'<div class="pimg'+(p.cover?' pcover':'')+'"><img src="'+(p.cover||p.image(start.c,(p.sides||['back','front'])[0]))+'" alt="'+p.name+' by Ellie &amp; Pip" loading="lazy"></div>'+
-      '<div class="pbody"><span class="ptype pill">'+pill(p)+'</span><h3>'+p.nameHtml+'</h3>'+
+      '<div class="pbody"><span class="ptype pill">'+(mate?'Girls & Boys':pill(p))+'</span><h3>'+chtml+'</h3>'+
       '<div class="prow"><strong>'+(p.cardPrice||rupee(p.price))+'</strong><span class="dots">'+
-      p.colours.filter(function(x){return !x.girlOnly;}).map(function(x){return '<i style="background:'+x.hex+'"></i>';}).join('')+
-      '</span></div><span class="pcount">'+p.colours.filter(function(x){return !x.girlOnly;}).length+' colours · '+p.sizes[0]+'–'+p.sizes[p.sizes.length-1]+'</span></div>';
-    card.addEventListener('click',function(){openProduct(p);});
+      cols.map(function(x){return '<i style="background:'+x.hex+'"></i>';}).join('')+
+      '</span></div><span class="pcount">'+cols.length+' colours · '+p.sizes[0]+'–'+p.sizes[p.sizes.length-1]+'</span></div>';
+    card.addEventListener('click',function(){openProduct(mate&&lastVibe==='boys'?mate:p);});
     grid.appendChild(card); cards[p.id]=card;
   });
   var setSection;
@@ -1276,7 +1290,9 @@ var REVIEWS = [
     function pick(v){
       var S=SECTIONS[sec];
       btns.forEach(function(b){b.setAttribute('aria-pressed',b._k===v.k?'true':'false');});
-      var n=0; PRODUCTS.forEach(function(p){var show=v.k==='all'?S.ids.indexOf(p.id)>-1:v.ids.indexOf(p.id)>-1; cards[p.id].hidden=!show; if(show)n++;});
+      lastVibe=v.k;
+      var list=(v.k==='all'?S.ids:v.ids).map(function(id){return PRIMARY[id]||id;});
+      var n=0; Object.keys(cards).forEach(function(id){var show=list.indexOf(id)>-1; cards[id].hidden=!show; if(show)n++;});
       $('shopCount').textContent=(v.k==='all'?S.label+' · all ':S.label+' · '+v.label+' · ')+n+(n===1?' design':' designs');
     }
     function build(){
@@ -1473,7 +1489,7 @@ var REVIEWS = [
   function colLabel(x){return x.name+' \u00B7 '+x.hex.toUpperCase();}
   function viewIndex(){for(var i=0;i<cur.views.length;i++){if(cur.views[i][0]===side)return i;}return 0;}
   function stepView(d){var n=cur.views.length;side=cur.views[(viewIndex()+d+n)%n][0];render();}
-  function openProduct(p,fromHash){
+  function openProduct(p,fromHash,keepOpen){
     cur=p; side=p.views?p.views[0][0]:(p.sides||['back','front'])[0];
     document.querySelector('.side').style.display=(p.views||(p.sides||['back','front']).length<2)?'none':'';
     $('vNav').hidden=!p.views;
@@ -1506,7 +1522,21 @@ var REVIEWS = [
       sw.appendChild(b);
       if(!p.sets)(p.views?p.views.map(function(v){return v[0];}):(p.sides||['front','back'])).forEach(function(sd){var i=new Image();i.src=p.image(x.c,sd);});
     });
+    var kf=$('pKidFit'), kb=$('pKidFits'); kb.innerHTML=''; kf.hidden=!p.pair;
+    if(p.pair){
+      var mates=p.fitK==='girl'?[p,BYID[p.pair]]:[BYID[p.pair],p];
+      $('pKidFitName').textContent=p.fitK==='girl'?'Girl':'Boy';
+      mates.forEach(function(m){var b=document.createElement('button');b.type='button';b.className='sz'+(m===p?' on':'');b.textContent=m.fitK==='girl'?'Girl':'Boy';b.setAttribute('aria-pressed',m===p?'true':'false');
+        b.addEventListener('click',function(){ if(m===p) return; var keepSize=size, keepCol=colourPicked?colour.name.replace(/ \(girls\)/,''):null, f=document.activeElement;
+          openProduct(m,true,true);
+          if(keepSize&&m.sizes.indexOf(keepSize)>-1) size=keepSize;
+          var mc=keepCol&&m.colours.filter(function(x){return x.name===keepCol;})[0]; if(mc){colour=mc;colourPicked=true;}
+          render(); try{history.replaceState(null,'','#'+m.id);}catch(e){}
+          var nb=Array.prototype.filter.call($('pKidFits').children,function(x){return x.textContent===(m.fitK==='girl'?'Girl':'Boy');})[0]; if(nb) nb.focus(); });
+        kb.appendChild(b);});
+    }
     render();
+    if(keepOpen) return;
     lastFocus=document.activeElement; pm.hidden=false; document.body.style.overflow='hidden'; $('productClose').focus();
     if(!fromHash && location.hash!=='#'+p.id){ try{history.replaceState(null,'','#'+p.id);}catch(e){} }
   }
