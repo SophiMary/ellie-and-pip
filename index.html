@@ -29,6 +29,8 @@
 {"@type":"ListItem","position":4,"item":{"@type":"Product","name":"Ellie & Pip Elephant Girls T-Shirt","description":"Cute watercolour elephant and bird t-shirt for girls, sizes 0-12 months to 13 years.","image":"img/cover-kids-girls.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"Offer","price":"449","priceCurrency":"INR","availability":"https://schema.org/InStock"}}},
 {"@type":"ListItem","position":5,"item":{"@type":"Product","name":"Ellie & Pip Elephant Boys T-Shirt","description":"Cute watercolour elephant and bird t-shirt for boys, sizes 0-12 months to 13 years.","image":"img/cover-kids-boys.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"Offer","price":"449","priceCurrency":"INR","availability":"https://schema.org/InStock"}}},
 {"@type":"ListItem","position":14,"item":{"@type":"Product","name":"Here Comes Trouble Girls T-Shirt","description":"Watercolour elephant on a skateboard with \"here comes trouble!\", girls tee, sizes 0-12 months to 13 years.","image":"img/cover-trouble.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"Offer","price":"449","priceCurrency":"INR","availability":"https://schema.org/InStock"}}},
+{"@type":"ListItem","position":16,"item":{"@type":"Product","name":"BEEEP Let's Do It Boys T-Shirt","description":"Crayon digger, loader, cement mixer and tipper truck tee with BEEEP!! LET'S DO IT!, sizes 0-12 months to 13 years.","image":"img/cover-beep-boys.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"Offer","price":"449","priceCurrency":"INR","availability":"https://schema.org/InStock"}}},
+{"@type":"ListItem","position":17,"item":{"@type":"Product","name":"BEEEP Let's Do It Girls T-Shirt","description":"Crayon digger, loader, cement mixer and tipper truck tee with BEEEP!! LET'S DO IT!, sizes 0-12 months to 13 years.","image":"img/cover-beep-girls.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"Offer","price":"449","priceCurrency":"INR","availability":"https://schema.org/InStock"}}},
 {"@type":"ListItem","position":15,"item":{"@type":"Product","name":"Here Comes Trouble Boys T-Shirt","description":"Watercolour elephant on a skateboard with \"here comes trouble!\", boys tee, sizes 0-12 months to 13 years.","image":"img/cover-trouble-boys.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"Offer","price":"449","priceCurrency":"INR","availability":"https://schema.org/InStock"}}},
 {"@type":"ListItem","position":11,"item":{"@type":"Product","name":"Dino Family Matching T-Shirts","description":"Matching Mamasaurus, Dadasaurus and Babysaurus family tees, also as Ammasaurus and Appasaurus. Family of 3 or 4, mom and kid, or dad and kid sets.","image":"img/cover-dino.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"AggregateOffer","lowPrice":"449","highPrice":"1699","priceCurrency":"INR","availability":"https://schema.org/InStock"}}},
 {"@type":"ListItem","position":12,"item":{"@type":"Product","name":"Pawsitive Energy Cats Oversized T-Shirt","description":"Cute cat oversized t-shirt with five kawaii cats and the line: Pawsitive Energy!","image":"img/cover-cats.webp","brand":{"@type":"Brand","name":"Ellie & Pip"},"offers":{"@type":"Offer","price":"629","priceCurrency":"INR","availability":"https://schema.org/InStock"}}},
@@ -923,6 +925,63 @@ var PRODUCTS = [
     image: function(c, set, name, fit){ return "img/dino-" + c + "-" + (set||"family") + "-" + (name||"en") + (fit==="girl" && set!=="mom" && set!=="dad" ? "-g" : "") + ".webp"; }
   },
   {
+    id: "beep-boys",
+    name: "BEEEP Let's Do It Boys Tee",
+    nameHtml: "BEEEP!! <em>Let\u2019s Do It</em> Boys Tee",
+    type: "Boys T-shirt",
+    cover: "img/cover-beep-boys.webp",
+    fitImg: "img/kids-fit.webp",
+    price: 449,
+    fit: "boys fit",
+    desc: "Beep beep! A digger, a loader, a cement mixer and a tipper truck in bright crayon colours, with big chunky \u201cBEEEP!! LET\u2019S DO IT!\u201d letters. For little builders who love big machines.",
+    specs: [["Fit","Boys cut: straight and roomy, a little longer in the body, with longer sleeves and a classic crew neck."],["Print","Front print, made fresh for your order."],["Care","Wash inside out in cold water, tumble dry low, iron inside out."]],
+    sizes: ["0-12M","12-23M","24-35M","36-47M","5Y","7Y","9Y","11Y","13Y"],
+    chart: "kidsBoys",
+    sides: ["front"],
+    startColour: "3",
+    colours: [
+      {c:"49", name:"Lavender", hex:"#BBB1D2"},
+      {c:"45", name:"Pink", hex:"#FFD5DB"},
+      {c:"51", name:"Beige", hex:"#EBCD8B"},
+      {c:"61", name:"Cream", hex:"#FFFAE7"},
+      {c:"1", name:"White", hex:"#FFFFFF"},
+      {c:"4", name:"Light grey", hex:"#C3C3C3"},
+      {c:"5", name:"Grey", hex:"#6E6E6E"},
+      {c:"40", name:"Charcoal", hex:"#3A3E41"},
+      {c:"3", name:"Navy", hex:"#2D314A"},
+      {c:"2", name:"Black", hex:"#151515"},
+      {c:"26", name:"Purple", hex:"#321541"},
+      {c:"41", name:"Olive", hex:"#453E2F"}
+    ],
+    image: function(c, side){ return "img/beepb-" + c + "-front.webp"; }
+  },
+  {
+    id: "beep-girls",
+    name: "BEEEP Let's Do It Girls Tee",
+    nameHtml: "BEEEP!! <em>Let\u2019s Do It</em> Girls Tee",
+    type: "Girls T-shirt",
+    cover: "img/cover-beep-girls.webp",
+    fitImg: "img/kids-fit.webp",
+    price: 449,
+    fit: "girls fit",
+    desc: "Beep beep! A digger, a loader, a cement mixer and a tipper truck in bright crayon colours, with big chunky \u201cBEEEP!! LET\u2019S DO IT!\u201d letters. For little builders who love big machines.",
+    specs: [["Fit","Girls cut: slightly fitted, a little shorter, with short sleeves and a softer, wider neckline."],["Print","Front print, made fresh for your order."],["Care","Wash inside out in cold water, tumble dry low, iron inside out."]],
+    sizes: ["0-12M","12-23M","24-35M","36-47M","5Y","7Y","9Y","11Y","13Y"],
+    chart: "kidsGirls",
+    sides: ["front"],
+    startColour: "1",
+    colours: [
+      {c:"1", name:"White", hex:"#FFFFFF"},
+      {c:"28", name:"Pink", hex:"#CC2867"},
+      {c:"4", name:"Grey", hex:"#C3C3C3"},
+      {c:"10", name:"Red", hex:"#A50303"},
+      {c:"9", name:"Royal blue", hex:"#1F286A"},
+      {c:"3", name:"Navy", hex:"#2D314A"},
+      {c:"2", name:"Black", hex:"#151515"}
+    ],
+    image: function(c, side){ return "img/beepg-" + c + "-front.webp"; }
+  },
+  {
     id: "here-comes-trouble",
     name: "Here Comes Trouble Girls Tee",
     nameHtml: "Here Comes <em>Trouble</em> Girls Tee",
@@ -1055,7 +1114,7 @@ var REVIEWS = [
   function $(id){return document.getElementById(id);}
   function rupee(n){return "\u20B9"+n;}
 
-  var KIDS=['here-comes-trouble','here-comes-trouble-boys','ellie-pip-girls','ellie-pip-boys','dino-family'];
+  var KIDS=['beep-boys','beep-girls','here-comes-trouble','here-comes-trouble-boys','ellie-pip-girls','ellie-pip-boys','dino-family'];
   var SECTIONS={
     adult:{label:'Grown-ups', vibes:[
       {k:'all',label:'All tees'},
@@ -1067,8 +1126,8 @@ var REVIEWS = [
     ]},
     kids:{label:'Kids', vibes:[
       {k:'all',label:'All kids'},
-      {k:'girls',label:'Girls',img:'img/cover-kids-girls.webp',ids:['here-comes-trouble','ellie-pip-girls','dino-family']},
-      {k:'boys',label:'Boys',img:'img/cover-kids-boys.webp',ids:['here-comes-trouble-boys','ellie-pip-boys','dino-family']},
+      {k:'girls',label:'Girls',img:'img/cover-kids-girls.webp',ids:['beep-girls','here-comes-trouble','ellie-pip-girls','dino-family']},
+      {k:'boys',label:'Boys',img:'img/cover-kids-boys.webp',ids:['beep-boys','here-comes-trouble-boys','ellie-pip-boys','dino-family']},
       {k:'ellie',label:'Ellie & Pip',img:'img/cover-trouble.webp',ids:['here-comes-trouble','here-comes-trouble-boys','ellie-pip-girls','ellie-pip-boys']},
       {k:'fam',label:'Family sets',img:'img/cover-dino.webp',ids:['dino-family']}
     ]}
